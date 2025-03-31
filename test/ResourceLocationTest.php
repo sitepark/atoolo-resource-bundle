@@ -58,4 +58,40 @@ class ResourceLocationTest extends TestCase
             'unexpected string',
         );
     }
+
+    public function testOfPath(): void
+    {
+        $location = ResourceLocation::ofPath(
+            '/path',
+        );
+        $this->assertEquals(
+            '/path.php',
+            $location->__toString(),
+            'unexpected string',
+        );
+    }
+
+    public function testOfPathWithSuffix(): void
+    {
+        $location = ResourceLocation::ofPath(
+            '/path.php',
+        );
+        $this->assertEquals(
+            '/path.php',
+            $location->__toString(),
+            'unexpected string',
+        );
+    }
+
+    public function testOfPathWithEndingSlash(): void
+    {
+        $location = ResourceLocation::ofPath(
+            '/path/',
+        );
+        $this->assertEquals(
+            '/path/index.php',
+            $location->__toString(),
+            'unexpected string',
+        );
+    }
 }

@@ -21,6 +21,19 @@ class ResourceLocation
         );
     }
 
+    public static function ofPath(
+        string $path,
+        ?ResourceLanguage $lang = null,
+    ): self {
+        if (str_ends_with($path, '.php')) {
+            return self::of($path, $lang);
+        }
+        if (str_ends_with($path, '/')) {
+            return self::of($path . 'index.php', $lang);
+        }
+        return self::of($path . '.php', $lang);
+    }
+
     public function __toString(): string
     {
         if ($this->lang->code === '') {
