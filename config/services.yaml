@@ -9,7 +9,7 @@ services:
       - { name: 'container.env_var_loader', priority: 10 }
 
   atoolo_resource.resource_channel_factory:
-    class: Atoolo\Resource\SiteKitResourceChannelFactory
+    class: Atoolo\Resource\Factory\SiteKitResourceChannelFactory
     arguments:
       - '%atoolo_resource.resource_root%'
 

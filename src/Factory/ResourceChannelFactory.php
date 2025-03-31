@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Atoolo\Resource;
+namespace Atoolo\Resource\Factory;
+
+use Atoolo\Resource\ResourceChannel;
 
 interface ResourceChannelFactory
 {
