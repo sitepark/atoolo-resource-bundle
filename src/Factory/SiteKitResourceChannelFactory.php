@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Atoolo\Resource;
+namespace Atoolo\Resource\Factory;
 
+use Atoolo\Resource\DataBag;
+use Atoolo\Resource\ResourceChannel;
+use Atoolo\Resource\ResourceTenant;
 use RuntimeException;
 
 /**

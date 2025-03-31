@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Atoolo\Resource\Test;
+namespace Atoolo\Resource\Test\Factory;
 
 use Atoolo\Resource\DataBag;
+use Atoolo\Resource\Factory\SiteKitResourceChannelFactory;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceTenant;
-use Atoolo\Resource\SiteKitResourceChannelFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -17,7 +17,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
     public function testCreateWithResourceLayout(): void
     {
         $baseDir = __DIR__ .
-            '/resources/SiteKitResourceChannelFactory' .
+            '/../resources/SiteKitResourceChannelFactory' .
             '/resourceLayout';
         $resourceDir = $baseDir . '/objects';
         $configDir = $baseDir . '/configs';
@@ -57,7 +57,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
     public function testCreateWithDocumentRootLayout(): void
     {
         $baseDir = __DIR__ .
-            '/resources/SiteKitResourceChannelFactory' .
+            '/../resources/SiteKitResourceChannelFactory' .
             '/documentRootLayout';
         $resourceDir = $baseDir;
         $configDir = $baseDir;
@@ -97,7 +97,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
     public function testCreateNonExistsContextPhp(): void
     {
         $resourceDir = __DIR__ .
-            '/resources/SiteKitResourceChannelFactory' .
+            '/../resources/SiteKitResourceChannelFactory' .
             '/noexists';
 
         $factory = new SiteKitResourceChannelFactory($resourceDir);
@@ -109,7 +109,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
     public function testCreateWithInvalidContextPhp(): void
     {
         $resourceDir = __DIR__ .
-            '/resources/SiteKitResourceChannelFactory' .
+            '/../resources/SiteKitResourceChannelFactory' .
             '/invalid';
 
         $factory = new SiteKitResourceChannelFactory($resourceDir);
