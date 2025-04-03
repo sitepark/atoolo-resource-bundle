@@ -12,33 +12,15 @@ services:
   Atoolo\Resource\Service\:
     resource: '../src/Service'
 
-  Atoolo\Resource\Env\EnvVarLoader:
-    tags:
-      - { name: 'container.env_var_loader', priority: 10 }
+  Atoolo\Resource\Loader\:
+    resource: '../src/Loader'
 
-  atoolo_resource.resource_channel_factory:
-    class: Atoolo\Resource\Factory\SiteKitResourceChannelFactory
-    arguments:
-      - '%atoolo_resource.resource_root%'
+  Atoolo\Resource\Factory\:
+    resource: '../src/Factory'
 
   atoolo_resource.resource_channel:
     class: Atoolo\Resource\ResourceChannel
     factory: ['@atoolo_resource.resource_channel_factory', 'create']
-
-  atoolo_resource.resource_loader:
-    class: Atoolo\Resource\Loader\SiteKitLoader
-    arguments:
-      - '@atoolo_resource.resource_channel'
-
-  atoolo_resource.cached_resource_loader:
-    class: Atoolo\Resource\Loader\CachedResourceLoader
-    arguments:
-      - '@atoolo_resource.resource_loader'
-
-  atoolo_resource.navigation_hierarchy_loader:
-    class: Atoolo\Resource\Loader\SiteKitNavigationHierarchyLoader
-    arguments:
-      - '@atoolo_resource.cached_resource_loader'
 
   atoolo_resource.category_hierarchy_loader:
     class: Atoolo\Resource\Loader\SiteKitResourceHierarchyLoader

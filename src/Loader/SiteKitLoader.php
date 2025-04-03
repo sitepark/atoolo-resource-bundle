@@ -17,6 +17,8 @@ use Atoolo\Resource\ResourceLocation;
 use Error;
 use Locale;
 use ParseError;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * ResourceLoader that loads resources created with SiteKit aggregators.
@@ -27,6 +29,7 @@ use ParseError;
  *     locale: string
  * }
  */
+#[AsAlias(id: 'atoolo_resource.resource_loader')]
 class SiteKitLoader implements ResourceLoader
 {
     /**
@@ -35,6 +38,7 @@ class SiteKitLoader implements ResourceLoader
     private ?array $langLocaleMap = null;
 
     public function __construct(
+        #[Autowire(service: 'atoolo_resource.resource_channel')]
         private readonly ResourceChannel $resourceChannel,
     ) {}
 
