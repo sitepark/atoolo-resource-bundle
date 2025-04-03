@@ -8,6 +8,8 @@ use Atoolo\Resource\DataBag;
 use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceTenant;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @phpstan-type ContextPhp array{
@@ -30,6 +32,7 @@ use RuntimeException;
  *     }
  * }
  */
+#[AsAlias(id: 'atoolo_resource.resource_channel_factory')]
 class SiteKitResourceChannelFactory implements ResourceChannelFactory
 {
     private string $contextPhpFile;
@@ -39,6 +42,7 @@ class SiteKitResourceChannelFactory implements ResourceChannelFactory
     private string $configDir;
 
     public function __construct(
+        #[Autowire(param: 'atoolo_resource.resource_root')]
         private readonly string $baseDir,
     ) {
         if (empty($this->baseDir)) {

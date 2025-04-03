@@ -9,12 +9,15 @@ use Atoolo\Resource\Exception\ResourceNotFoundException;
 use Atoolo\Resource\Resource;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * The CachedResourceLoader class is used to load resources
  * from a given location and cache them for future use.
  * The cache is stored in memory and is not persistent.
  */
+#[AsAlias(id: 'atoolo_resource.cached_resource_loader')]
 class CachedResourceLoader implements ResourceLoader
 {
     /**
@@ -22,6 +25,7 @@ class CachedResourceLoader implements ResourceLoader
      */
     private array $cache = [];
     public function __construct(
+        #[Autowire(service: 'atoolo_resource.resource_loader')]
         private readonly ResourceLoader $resourceLoader,
     ) {}
 

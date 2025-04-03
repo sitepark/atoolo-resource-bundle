@@ -10,11 +10,16 @@ use Atoolo\Resource\Exception\RootMissingException;
 use Atoolo\Resource\Resource;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+#[AsAlias(id: 'atoolo_resource.navigation_hierarchy_loader')]
 class SiteKitNavigationHierarchyLoader extends SiteKitResourceHierarchyLoader
 {
-    public function __construct(ResourceLoader $resourceLoader)
-    {
+    public function __construct(
+        #[Autowire(service: 'atoolo_resource.resource_loader')]
+        ResourceLoader $resourceLoader,
+    ) {
         parent::__construct($resourceLoader, 'navigation');
     }
 
