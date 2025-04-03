@@ -9,7 +9,6 @@ use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use Symfony\Component\DependencyInjection\EnvVarLoaderInterface;
 
-#[AutoconfigureTag('container.env_var_loader', ['priority' => 10])]
 class EnvVarLoader implements EnvVarLoaderInterface
 {
     private readonly string $baseDir;
