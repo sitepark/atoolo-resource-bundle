@@ -23,6 +23,7 @@ class ResourceTenant
         public readonly string $id,
         public readonly string $name,
         public readonly string $anchor,
+        public readonly string $host,
         public readonly DataBag $attributes,
     ) {}
 }

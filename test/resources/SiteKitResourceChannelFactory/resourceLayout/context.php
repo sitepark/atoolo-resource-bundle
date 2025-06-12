@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'server' => [
+        'host' => 'test-host',
+    ],
     'tenant' => [
         'id' => '2',
         'name' => 'Test-Tanent',
