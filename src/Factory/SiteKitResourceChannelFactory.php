@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  *          locale: ?string,
  *          encoding: ?string,
  *          translationLocales: ?string[],
- *          attributes: array<string, mixed>,
+ *          attributes: ?array<string, mixed>,
  *     }
  * }
  */
@@ -76,8 +76,8 @@ class SiteKitResourceChannelFactory implements ResourceChannelFactory
             $searchIndex,
             $data['publisher']['translationLocales'] ?? [],
             new DataBag(array_merge(
-                $data['tenant']['attributes'] ?? [],
-                    $data['publisher']['attributes'] ?? [],
+                $data['tenant']['attributes'],
+                $data['publisher']['attributes'] ?? [],
             )),
             $this->createTenant($data['tenant']),
         );
