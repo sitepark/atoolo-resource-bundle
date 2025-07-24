@@ -18,5 +18,9 @@ return [
         'nature' => 'internet',
         'locale' => 'de_DE',
         'encoding' => 'UTF-8',
+        'attributes' => [
+            'hello' => 'world',
+            'abc' => 'xyz',
+        ],
     ],
 ];

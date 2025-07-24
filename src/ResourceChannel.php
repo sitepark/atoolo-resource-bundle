@@ -31,6 +31,7 @@ class ResourceChannel
         public readonly string $configDir,
         public readonly string $searchIndex,
         public readonly array $translationLocales,
+        public readonly DataBag $attributes,
         public readonly ResourceTenant $tenant,
     ) {}
 }
