@@ -38,6 +38,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
             $configDir,
             'test',
             [],
+            new DataBag(['abc' => 'xyz' , 'hello' => 'world']),
             new ResourceTenant(
                 '2',
                 'Test-Tanent',
@@ -79,6 +80,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
             $configDir,
             'test',
             [],
+            new DataBag(['abc' => 'cde']),
             new ResourceTenant(
                 '2',
                 'Test-Tanent',

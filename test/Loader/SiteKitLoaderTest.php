@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Atoolo\Resource\Test\Loader;
 
+use Atoolo\Resource\DataBag;
 use Atoolo\Resource\Exception\InvalidResourceException;
 use Atoolo\Resource\Exception\ResourceNotFoundException;
 use Atoolo\Resource\Loader\SiteKitLoader;
@@ -35,6 +36,7 @@ class SiteKitLoaderTest extends TestCase
             '',
             'test-www',
             ['en_US', 'it_IT'],
+            new DataBag(['attribute' => 'value']),
             $this->createStub(ResourceTenant::class),
         );
         $this->loader = new SiteKitLoader($channel);
