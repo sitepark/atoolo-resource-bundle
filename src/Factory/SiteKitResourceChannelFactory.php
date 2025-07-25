@@ -13,6 +13,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
  * @phpstan-type ContextPhp array{
+ *     server: array{
+    *     host: string
+ *     },
  *     tenant: array{
  *         id: string,
  *         name: string,
@@ -79,7 +82,7 @@ class SiteKitResourceChannelFactory implements ResourceChannelFactory
                 $data['tenant']['attributes'],
                 $data['publisher']['attributes'] ?? [],
             )),
-            $this->createTenant($data['tenant']),
+            $this->createTenant(array_merge($data['tenant'], ['host' => $data['server']['host']])),
         );
     }
 
@@ -88,6 +91,7 @@ class SiteKitResourceChannelFactory implements ResourceChannelFactory
      *     id: string,
      *     name: string,
      *     anchor: string,
+     *     host: string,
      *     attributes: array<string, mixed>,
      * } $data
      * @return ResourceTenant
@@ -98,6 +102,7 @@ class SiteKitResourceChannelFactory implements ResourceChannelFactory
             (string) $data['id'],
             $data['name'],
             $data['anchor'],
+            $data['host'],
             new DataBag($data['attributes']),
         );
     }

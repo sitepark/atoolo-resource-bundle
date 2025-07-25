@@ -43,6 +43,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
                 '2',
                 'Test-Tanent',
                 'test-tanent',
+                'test-host',
                 new DataBag([
                     'abc' => 'cde',
                 ]),
@@ -84,6 +85,7 @@ class SiteKitResourceChannelFactoryTest extends TestCase
                 '2',
                 'Test-Tanent',
                 'test-tanent',
+                'test-host',
                 new DataBag([
                     'abc' => 'cde',
                 ]),
