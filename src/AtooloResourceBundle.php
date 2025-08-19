@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Atoolo\Resource;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\GlobFileLoader;
-use Symfony\Component\Config\Loader\LoaderResolver;
+use Atoolo\Resource\DependencyInjection\Compiler\ResourceCapabilityValidatorPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -18,18 +15,7 @@ class AtooloResourceBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
-        $configDir = __DIR__ . '/../config';
-
-        $locator = new FileLocator($configDir);
-        $loader = new GlobFileLoader($locator);
-        $loader->setResolver(
-            new LoaderResolver(
-                [
-                    new YamlFileLoader($container, $locator),
-                ],
-            ),
-        );
-
-        $loader->load('services.yaml');
+        parent::build($container);
+        $container->addCompilerPass(new ResourceCapabilityValidatorPass());
     }
 }
