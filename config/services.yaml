@@ -31,3 +31,8 @@ services:
     arguments:
       - '@atoolo_resource.cached_resource_loader'
       - 'category'
+
+  atoolo_resource.resource_capability_factory:
+    class: Atoolo\Resource\ResourceCapabilityFactory
+    arguments: 
+      - []
