@@ -10,9 +10,9 @@ namespace Atoolo\Resource;
 final class ResourceViewFactory
 {
     /**
-     * @param iterable<ResourceViewContributor> $resolvers
+     * @param iterable<ResourceViewContributor> $contributors
      */
-    public function __construct(private iterable $resolvers) {}
+    public function __construct(private iterable $contributors) {}
 
     /**
      * Creates a ResourceView for a given resource.
@@ -20,9 +20,9 @@ final class ResourceViewFactory
     public function create(AbstractResource $resource): ResourceView
     {
         $builder = new ResourceViewBuilder();
-        foreach ($this->resolvers as $resolver) {
-            if ($resolver->supports($resource)) {
-                $resolver->contribute($resource, $builder);
+        foreach ($this->contributors as $contributor) {
+            if ($contributor->supports($resource)) {
+                $contributor->contribute($resource, $builder);
             }
         }
         return $builder->build();
@@ -43,11 +43,11 @@ final class ResourceViewFactory
         foreach ($resources as $r) {
             $builders[$r->id] = new ResourceViewBuilder();
         }
-        foreach ($this->resolvers as $resolver) {
+        foreach ($this->contributors as $contributor) {
             $supportedResources = [];
             $buildersForSupportedResources = [];
             foreach ($resources as $r) {
-                if ($resolver->supports($r)) {
+                if ($contributor->supports($r)) {
                     $supportedResources[] = $r;
                     $buildersForSupportedResources[$r->id] = $builders[$r->id];
                 }
@@ -55,11 +55,11 @@ final class ResourceViewFactory
             if (empty($supportedResources)) {
                 continue;
             }
-            if ($resolver instanceof ResourceViewBatchContributor) {
-                $resolver->batchContribute($supportedResources, $buildersForSupportedResources);
+            if ($contributor instanceof ResourceViewBatchContributor) {
+                $contributor->batchContribute($supportedResources, $buildersForSupportedResources);
             } else {
                 foreach ($supportedResources as $r) {
-                    $resolver->contribute($r, $buildersForSupportedResources[$r->id]);
+                    $contributor->contribute($r, $buildersForSupportedResources[$r->id]);
                 }
             }
         }
