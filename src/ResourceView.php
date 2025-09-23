@@ -32,6 +32,7 @@ final class ResourceView implements LoggerAwareInterface
 
     /**
      * Returns the feature of the given type, constructing it if necessary.
+     * Throws an error if the feature is unavailable.
      *
      * @template T of ResourceFeature
      * @param class-string<T> $feature Fully-qualified class name of the feature.
@@ -41,19 +42,15 @@ final class ResourceView implements LoggerAwareInterface
      */
     public function get(string $feature): ResourceFeature
     {
-        if (!isset($this->resolved[$feature])) {
-            if (!isset($this->factories[$feature])) {
-                throw new MissingFeatureException($feature, $this);
-            }
-            $this->resolved[$feature] = ($this->factories[$feature])();
+        $resolved = $this->tryGet($feature);
+        if ($resolved === null) {
+            throw new MissingFeatureException($feature, $this);
         }
-        /** @var T $resolved */
-        $resolved = $this->resolved[$feature];
         return $resolved;
     }
 
     /**
-     * Attempts to return a feature. If unavailable, logs a warning and returns null.
+     *  Returns the feature of the given type, constructing it if necessary. If unavailable, returns null.
      *
      * @template T of ResourceFeature
      * @param class-string<T> $feature
@@ -61,15 +58,12 @@ final class ResourceView implements LoggerAwareInterface
      */
     public function tryGet(string $feature): ?ResourceFeature
     {
-        try {
-            return $this->get($feature);
-        } catch (\Throwable $th) {
-            $this->logger?->warning('failed to get resource feature', [
-                'feature' => $feature,
-                'error' => $th,
-            ]);
+        if (!isset($this->resolved[$feature]) && isset($this->factories[$feature])) {
+            $this->resolved[$feature] = ($this->factories[$feature])();
         }
-        return null;
+        /** @var ?T $resolved */
+        $resolved = $this->resolved[$feature] ?? null;
+        return $resolved;
     }
 
     /**
