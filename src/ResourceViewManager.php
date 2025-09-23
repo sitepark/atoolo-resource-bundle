@@ -22,9 +22,9 @@ final class ResourceViewManager
     /**
      * Retrieves the ResourceView for a given resource, creating and caching if needed.
      */
-    public function for(AbstractResource $resource): ResourceView
+    public function forResource(AbstractResource $resource): ResourceView
     {
-        return $this->cache[$resource->id] ??= $this->factory->create($resource);
+        return $this->cache[$resource->id] ??= $this->factory->createView($resource);
     }
 
     /**
@@ -35,7 +35,7 @@ final class ResourceViewManager
      * @param AbstractResource[] $resources
      * @return array<string,ResourceView> keyed by resource ID
      */
-    public function forBatch(array $resources): array
+    public function forResources(array $resources): array
     {
         $cachedViews = [];
         $uncachedResources = array_filter(
@@ -50,7 +50,7 @@ final class ResourceViewManager
         );
         $newViews = [];
         if (!empty($uncachedResources)) {
-            $newViews = $this->factory->createBatch($uncachedResources);
+            $newViews = $this->factory->createViews($uncachedResources);
             foreach ($newViews as $id => $view) {
                 $this->cache[$id] = $view;
             }

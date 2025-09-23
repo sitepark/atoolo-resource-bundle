@@ -17,7 +17,7 @@ final class ResourceViewFactory
     /**
      * Creates a ResourceView for a given resource.
      */
-    public function create(AbstractResource $resource): ResourceView
+    public function createView(AbstractResource $resource): ResourceView
     {
         $builder = new ResourceViewBuilder();
         foreach ($this->contributors as $contributor) {
@@ -37,7 +37,7 @@ final class ResourceViewFactory
      * @param AbstractResource[] $resources
      * @return array<string,ResourceView> keyed by resource ID
      */
-    public function createBatch(array $resources): array
+    public function createViews(array $resources): array
     {
         $builders = [];
         foreach ($resources as $r) {
@@ -56,7 +56,7 @@ final class ResourceViewFactory
                 continue;
             }
             if ($contributor instanceof ResourceViewBatchContributor) {
-                $contributor->batchContribute($supportedResources, $buildersForSupportedResources);
+                $contributor->contributeBatch($supportedResources, $buildersForSupportedResources);
             } else {
                 foreach ($supportedResources as $r) {
                     $contributor->contribute($r, $buildersForSupportedResources[$r->id]);
