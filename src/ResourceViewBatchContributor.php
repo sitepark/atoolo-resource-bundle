@@ -13,7 +13,7 @@ namespace Atoolo\Resource;
 interface ResourceViewBatchContributor
 {
     /**
-     * @param AbstractResource[] $resources
+     * @param Resource[] $resources
      * @param array<string,ResourceViewBuilder> $builders keyed by resource ID.
      */
     public function contributeBatch(array $resources, array $builders): void;
