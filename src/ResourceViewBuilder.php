@@ -9,7 +9,7 @@ use Atoolo\Resource\ResourceFeature;
 final class ResourceViewBuilder
 {
     /**
-     * @var array<class-string<ResourceFeature>, array{priority:int, factory:(callable():ResourceFeature)}>
+     * @var array<class-string<ResourceFeature>, ResourceViewBuilderBagEntry>
      */
     private array $bag = [];
 
@@ -24,17 +24,17 @@ final class ResourceViewBuilder
         $factory = $value instanceof ResourceFeature
             ? fn() => $value
             : $value;
-        if ($cur === null || $priority > $cur['priority']) {
-            $this->bag[$feature] = ['priority' => $priority, 'factory' => $factory];
+        if ($cur === null || $priority > $cur->priority) {
+            $this->bag[$feature] = new ResourceViewBuilderBagEntry($priority, $factory);
         }
     }
 
     public function build(): ResourceView
     {
-        $features = [];
+        $factories = [];
         foreach ($this->bag as $class => $entry) {
-            $features[$class] = $entry['factory'];
+            $factories[$class] = $entry->factory;
         }
-        return new ResourceView($features);
+        return new ResourceView($factories);
     }
 }
