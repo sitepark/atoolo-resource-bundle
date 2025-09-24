@@ -12,10 +12,10 @@ class SiteKitResource extends Resource
     public function __construct(
         string $location,
         string $id,
-        string $name,
-        string $objectType,
+        public readonly string $name,
+        public readonly string $objectType,
         ResourceLanguage $lang,
-        DataBag $data,
+        public readonly DataBag $data,
     ) {
         parent::__construct(
             $location,
