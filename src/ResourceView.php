@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Atoolo\Resource;
 
 use Atoolo\Resource\Exception\MissingFeatureException;
-use Atoolo\Resource\ResourceFeature;
+use Atoolo\Resource\ResourceFeature\ResourceFeature;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Atoolo\Resource;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
+
 /**
  * Contributes features to a ResourceView for supported resources.
  */

@@ -2,7 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Atoolo\Resource;
+namespace Atoolo\Resource\SiteKit;
+
+use Atoolo\Resource\DataBag;
+use Atoolo\Resource\Resource;
+use Atoolo\Resource\ResourceLanguage;
+use Atoolo\Resource\ResourceLocation;
 
 /**
  * Represents a resource from Sitepark's content management system

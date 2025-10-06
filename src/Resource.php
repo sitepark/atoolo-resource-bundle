@@ -47,7 +47,7 @@ class Resource
 
     /**
      * @deprecated This method will be made abstract in version 2.0.0.
-     * Use the class \SP\Resource\SiteKitResource if you want to keep using this property.
+     * Use the class \SP\Resource\SiteKitResource if you want to keep using this method.
      */
     public function toLocation(): ResourceLocation
     {

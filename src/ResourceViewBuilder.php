@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Atoolo\Resource;
 
-use Atoolo\Resource\ResourceFeature;
+use Atoolo\Resource\ResourceFeature\ResourceFeature;
 
 final class ResourceViewBuilder
 {

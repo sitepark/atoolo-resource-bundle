@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Atoolo\Resource;
+namespace Atoolo\Resource\ResourceFeature;
 
 /**
  * Marker interface for features that can be attached to a ResourceView.
