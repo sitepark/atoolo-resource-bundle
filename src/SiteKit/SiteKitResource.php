@@ -11,16 +11,19 @@ use Atoolo\Resource\ResourceLocation;
 
 /**
  * Represents a resource from Sitepark's content management system
+ * @property-read string $name name of the resource (e.g. in Infosite)
+ * @property-read string $objectType objectType
+ * @property-read DataBag $data aggregated data
  */
 class SiteKitResource extends Resource
 {
     public function __construct(
         string $location,
         string $id,
-        public readonly string $name,
-        public readonly string $objectType,
+        string $name,
+        string $objectType,
         ResourceLanguage $lang,
-        public readonly DataBag $data,
+        DataBag $data,
     ) {
         parent::__construct(
             $location,
