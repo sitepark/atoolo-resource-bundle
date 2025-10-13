@@ -31,3 +31,20 @@ services:
     arguments:
       - '@atoolo_resource.cached_resource_loader'
       - 'category'
+
+  # resource view system
+
+  atoolo_resource.resource_view_factory:
+    class: Atoolo\Resource\ResourceViewFactory
+    arguments:
+      - !tagged_iterator resource_view.contributor
+  
+  atoolo_resource.resource_view_manager:
+    class: Atoolo\Resource\ResourceViewManager
+    arguments:
+      - '@atoolo_resource.resource_view_factory'
+
+  atoolo_resource.resource_view_contributor:
+    class: Atoolo\Resource\ResourceViewContributor
+    tags: ['resource_view.contributor']
+
