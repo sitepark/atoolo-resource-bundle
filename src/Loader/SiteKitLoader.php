@@ -47,7 +47,7 @@ class SiteKitLoader implements ResourceLoader
      * @throws InvalidResourceException
      * @throws ResourceNotFoundException
      */
-    public function load(ResourceLocation $location): Resource
+    public function load(ResourceLocation $location): SiteKitResource
     {
         $data = $this->loadRaw($location);
 
