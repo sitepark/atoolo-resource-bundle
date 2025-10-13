@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Atoolo\Resource\ResourceFeature;
 
+/**
+ * Provides data about the publishing state of a resource
+ */
 final class PublishingDataFeature implements ResourceFeature
 {
     public function __construct(

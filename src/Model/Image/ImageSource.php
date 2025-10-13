@@ -12,14 +12,16 @@ final class ImageSource
 {
     /**
      * @param string $url The URL of this image version.
-     * @param ?string $media The media query for art direction (e.g., '(min-width: 900px)').
+     * @param ?string $mediaQuery The media query for art direction (e.g., '(min-width: 900px)').
      * @param ?string $mimeType The MIME type for different formats (e.g., 'image/webp').
      * @param ?int $width The width of this version in pixels.
+     * @param ?int $height The height of this version in pixels.
      */
     public function __construct(
         public readonly string $url,
-        public readonly ?string $media = null,
+        public readonly ?string $mediaQuery = null,
         public readonly ?string $mimeType = null,
         public readonly ?int $width = null,
+        public readonly ?int $height = null,
     ) {}
 }

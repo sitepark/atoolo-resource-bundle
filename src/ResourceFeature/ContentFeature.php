@@ -3,9 +3,9 @@
 namespace Atoolo\Resource\ResourceFeature;
 
 /**
- * Feature for basic content data
+ * Provides the content data of a resource
  */
-final class BasicContentFeature implements ResourceFeature
+final class ContentFeature implements ResourceFeature
 {
     public function __construct(
         public readonly ?string $headline = null,

@@ -3,7 +3,7 @@
 namespace Atoolo\Resource\ResourceFeature;
 
 /**
- * Basic data about the identity of a feature
+ * Provides the most basic identitiy data of a resource
  */
 final class IdentityFeature implements ResourceFeature
 {

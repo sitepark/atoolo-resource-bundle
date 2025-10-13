@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Atoolo\Resource\Model\Image;
 
 use Atoolo\Resource\Model\Copyright;
+use Atoolo\Resource\Model\Image\Asset;
 
 /**
  * Represents a complete image, including multiple sources for responsive
@@ -20,6 +21,7 @@ final class Image
      * @param ?int $height The intrinsic height of the fallback image to prevent layout shift.
      * @param ?Copyright $copyright Copyright information for the image.
      * @param ?string $characteristic
+     * @param array<string,mixed> $variants
      */
     public function __construct(
         public readonly string $url,
@@ -29,5 +31,6 @@ final class Image
         public readonly ?int $height = null,
         public readonly ?Copyright $copyright = null,
         public readonly ?string $characteristic = null,
+        public readonly array $variants = [], // TODO
     ) {}
 }

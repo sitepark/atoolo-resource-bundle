@@ -3,7 +3,7 @@
 namespace Atoolo\Resource\ResourceFeature;
 
 /**
- * Feature for basic metadata/SEO data
+ * Provides basic metadata/SEO data of a resource
  *
  * @phpstan-type RobotsDirective "index"|"noindex"|"follow"|"nofollow"|"all"|"none"|"noarchive"|"nosnippet"|"noimageindex"|"nocache"
  */
