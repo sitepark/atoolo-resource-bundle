@@ -24,6 +24,7 @@ services:
 
   atoolo_resource.resource_channel:
     class: Atoolo\Resource\ResourceChannel
+    lazy: true
     factory: ['@atoolo_resource.resource_channel_factory', 'create']
 
   atoolo_resource.category_hierarchy_loader:
