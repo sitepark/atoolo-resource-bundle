@@ -12,13 +12,22 @@ use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLocation;
 use Atoolo\Resource\ResourceTenant;
+use Atoolo\Resource\Service\IdPathMapper;
+use Atoolo\Resource\Service\LangPathService;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SiteKitLoader::class)]
 class SiteKitLoaderTest extends TestCase
 {
+    private LangPathService&MockObject $langPathService;
+
+    private IdPathMapper&MockObject $idPathMapper;
+
     private SiteKitLoader $loader;
+
+
 
     protected function setUp(): void
     {
@@ -39,7 +48,10 @@ class SiteKitLoaderTest extends TestCase
             new DataBag(['attribute' => 'value']),
             $this->createStub(ResourceTenant::class),
         );
-        $this->loader = new SiteKitLoader($channel);
+        $this->langPathService = $this->createMock(LangPathService::class);
+        $this->idPathMapper = $this->createMock(IdPathMapper::class);
+
+        $this->loader = new SiteKitLoader($channel, $this->langPathService, $this->idPathMapper);
     }
 
     public function testExists(): void
@@ -72,6 +84,7 @@ class SiteKitLoaderTest extends TestCase
 
     public function testLoadValidResourceWithLang(): void
     {
+        $this->langPathService->method('langToLocale')->willReturn('en_US');
         $resource = $this->loader->load(
             ResourceLocation::of(
                 'validResource.php',

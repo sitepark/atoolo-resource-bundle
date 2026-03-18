@@ -65,6 +65,7 @@ class PParameterServiceTest extends TestCase
     {
         return new Resource(
             location: $location,
+            url: $location,
             id: $id,
             name: '',
             objectType: '',

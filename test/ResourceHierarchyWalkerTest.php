@@ -129,6 +129,7 @@ class ResourceHierarchyWalkerTest extends TestCase
             '',
             '',
             '',
+            '',
             \Atoolo\Resource\ResourceLanguage::default(),
             new \Atoolo\Resource\DataBag([]),
         );
@@ -187,6 +188,7 @@ class ResourceHierarchyWalkerTest extends TestCase
             $hierarchyLoader,
         );
         $base = new \Atoolo\Resource\Resource(
+            '',
             '',
             '',
             '',

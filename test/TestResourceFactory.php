@@ -13,8 +13,9 @@ class TestResourceFactory
     public static function create(array $data): Resource
     {
         return new Resource(
+            $data['location'] ?? $data['url'] ?? '',
             $data['url'] ?? '',
-            $data['id'] ?? '',
+            (string) ($data['id'] ?? ''),
             $data['name'] ?? '',
             $data['objectType'] ?? '',
             ResourceLanguage::of($data['locale'] ?? ''),

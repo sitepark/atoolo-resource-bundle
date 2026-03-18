@@ -14,9 +14,13 @@ use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
+use Atoolo\Resource\Service\IdPathMapper;
+use Atoolo\Resource\Service\LangPathService;
 use Error;
+use Exception;
 use Locale;
 use ParseError;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -32,15 +36,22 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[AsAlias(id: 'atoolo_resource.resource_loader')]
 class SiteKitLoader implements ResourceLoader
 {
-    /**
-     * @var ?array<string, string> $langLocaleMap
-     */
-    private ?array $langLocaleMap = null;
-
     public function __construct(
         #[Autowire(service: 'atoolo_resource.resource_channel')]
         private readonly ResourceChannel $resourceChannel,
+        #[Autowire(service: 'atoolo_resource.lang_path_service')]
+        private readonly LangPathService $langPathService,
+        #[Autowire(service: 'atoolo_resource.id_path_mapper')]
+        private readonly ?IdPathMapper $idPathMapper,
     ) {}
+
+    public function idToLocation(int $id): ?string
+    {
+        if ($this->idPathMapper === null || !$this->idPathMapper->enabled()) {
+            return throw new RuntimeException("Unsupported operation");
+        }
+        return '/' . $this->idPathMapper?->pathFor($id) . '.php';
+    }
 
     /**
      * @throws InvalidResourceException
@@ -56,6 +67,7 @@ class SiteKitLoader implements ResourceLoader
 
         return new Resource(
             $location->location,
+            $data['url'],
             (string) $data['id'],
             $data['name'],
             $data['objectType'],
@@ -71,16 +83,37 @@ class SiteKitLoader implements ResourceLoader
         );
     }
 
-    public function cleanup(): void
-    {
-        $this->langLocaleMap = null;
-    }
+    public function cleanup(): void {}
 
     private function locationToFile(ResourceLocation $location): string
     {
-        $file = $this->resourceChannel->resourceDir . '/' .
-            $location->location;
-        $locale = $this->langToLocale($location->lang);
+
+        $locale = $this->langPathService->langToLocale($location->lang);
+
+        if ($this->idPathMapper !== null && $this->idPathMapper->enabled()) {
+            $mappedPath = $this->idPathMapper->mapToIdPath($location->location);
+            if ($mappedPath === null) {
+                throw new ResourceNotFoundException(
+                    $location,
+                    'No path mapping found for the resource location',
+                );
+            }
+
+            $file = $this->resourceChannel->resourceDir . '/' . $mappedPath . '.php';
+            if (empty($locale)) {
+                return $file;
+            }
+            $translated = $this->resourceChannel->resourceDir . '/' . $mappedPath . '.translations/' . $locale . '.php';
+            if (!file_exists($translated)) {
+                return $file;
+            }
+
+            return $translated;
+        }
+
+        $path = $location->location;
+
+        $file = $this->resourceChannel->resourceDir . '/' . $path;
         if (empty($locale)) {
             return $file;
         }
