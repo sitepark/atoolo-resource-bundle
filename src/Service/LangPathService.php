@@ -14,14 +14,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 #[AsAlias(id: 'atoolo_resource.lang_path_service')]
 class LangPathService
 {
-
     /**
-     * @var ?array<string, string> $langLocaleMap
+     * @var array<string, string> $langLocaleMap
      */
     private readonly array $langLocaleMap;
 
     /**
-     * @var ?array<string> $supportedLang
+     * @var array<string> $supportedLang
      */
     private readonly array $supportedLang;
 

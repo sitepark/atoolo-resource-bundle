@@ -19,7 +19,7 @@ class FixedDecimalGroupingIdPathMapper implements IdPathMapper
 {
     private int $levels;
     private int $digitsPerLevel;
-    private int|float $base;
+    private int $base;
 
     public function __construct(int $levels, int $digitsPerLevel)
     {
@@ -45,7 +45,7 @@ class FixedDecimalGroupingIdPathMapper implements IdPathMapper
 
         // already mapped media-url (/000/015/112.media/32813.php)
         if (preg_match(
-            '#((/\d{' . $this->digitsPerLevel . '}){' . $this->levels + 1 . '}\.\w+/\d+)\.\w+#',
+            '#((/\d{' . $this->digitsPerLevel . '}){' . ($this->levels + 1) . '}\.\w+/\d+)\.\w+#',
             $url,
             $matches,
         )) {
@@ -54,7 +54,7 @@ class FixedDecimalGroupingIdPathMapper implements IdPathMapper
 
         // already mapped url (/000/001/000.suffix)
         if (preg_match(
-            '#((/\d{' . $this->digitsPerLevel . '}){' . $this->levels + 1 . '}).\w+#',
+            '#((/\d{' . $this->digitsPerLevel . '}){' . ($this->levels + 1) . '}).\w+#',
             $url,
             $matches,
         )) {
@@ -156,7 +156,7 @@ class FixedDecimalGroupingIdPathMapper implements IdPathMapper
     /**
      * Calculates 10^exp
      */
-    private function pow10Long(int $exp): int|float
+    private function pow10Long(int $exp): int
     {
         $r = 1;
         for ($i = 0; $i < $exp; $i++) {

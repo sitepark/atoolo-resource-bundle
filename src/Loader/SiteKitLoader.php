@@ -18,7 +18,6 @@ use Atoolo\Resource\Service\IdPathMapper;
 use Atoolo\Resource\Service\LangPathService;
 use Error;
 use Exception;
-use Locale;
 use ParseError;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
@@ -28,6 +27,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  * ResourceLoader that loads resources created with SiteKit aggregators.
  * @phpstan-type ResourceData array{
  *     id: int,
+ *     url: string,
  *     name: string,
  *     objectType: string,
  *     locale: string
@@ -50,7 +50,7 @@ class SiteKitLoader implements ResourceLoader
         if ($this->idPathMapper === null || !$this->idPathMapper->enabled()) {
             return throw new RuntimeException("Unsupported operation");
         }
-        return '/' . $this->idPathMapper?->pathFor($id) . '.php';
+        return '/' . $this->idPathMapper->pathFor($id) . '.php';
     }
 
     /**
@@ -183,32 +183,6 @@ class SiteKitLoader implements ResourceLoader
             ob_end_clean();
             error_reporting($saveErrorReporting);
         }
-    }
-
-    private function langToLocale(ResourceLanguage $lang): string
-    {
-        if ($lang === ResourceLanguage::default()) {
-            return '';
-        }
-
-        $this->langLocaleMap ??= $this->createLangLocaleMap();
-
-        return $this->langLocaleMap[$lang->code] ?? '';
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function createLangLocaleMap(): array
-    {
-        $map = [];
-        foreach (
-            $this->resourceChannel->translationLocales as $availableLocale
-        ) {
-            $primaryLang = Locale::getPrimaryLanguage($availableLocale);
-            $map[$primaryLang] = $availableLocale;
-        }
-        return $map;
     }
 
     /**

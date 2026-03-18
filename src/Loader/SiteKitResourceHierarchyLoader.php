@@ -284,7 +284,7 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
             if ($parentId === (string) $id) {
 
                 return ResourceLocation::of(
-                    $this->idToLocation((int)$parent['id']) ?? $parent['url'],
+                    $this->idToLocation((int) $parent['id']) ?? $parent['url'],
                     $resource->lang,
                 );
 
