@@ -15,7 +15,7 @@ class ResourceTest extends TestCase
 {
     public function testToLocation(): void
     {
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'url' => 'path',
             'locale' => 'en_US',
         ]);

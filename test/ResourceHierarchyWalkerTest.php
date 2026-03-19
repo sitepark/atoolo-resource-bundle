@@ -7,6 +7,7 @@ namespace Atoolo\Resource\Test;
 use Atoolo\Resource\Loader\SiteKitResourceHierarchyLoader;
 use Atoolo\Resource\ResourceHierarchyLoader;
 use Atoolo\Resource\ResourceHierarchyWalker;
+use Atoolo\Resource\Resource;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
 use LogicException;
@@ -396,7 +397,7 @@ class ResourceHierarchyWalkerTest extends TestCase
         $walker = new ResourceHierarchyWalker(
             $hierarchyLoader,
         );
-        $base = TestResourceFactory::create([]);
+        $base = Resource::create([]);
 
         $walker->init($base);
 

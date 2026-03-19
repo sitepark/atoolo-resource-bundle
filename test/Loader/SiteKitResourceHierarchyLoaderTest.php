@@ -8,7 +8,7 @@ use Atoolo\Resource\Exception\InvalidResourceException;
 use Atoolo\Resource\Loader\SiteKitResourceHierarchyLoader;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
-use Atoolo\Resource\Test\TestResourceFactory;
+use Atoolo\Resource\Resource;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
@@ -138,7 +138,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testIsRoot(): void
     {
-        $root = TestResourceFactory::create([]);
+        $root = Resource::create([]);
         $isRoot = $this->hierarchyLoader->isRoot($root);
 
         $this->assertTrue(
@@ -318,7 +318,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testGetParentLocationWithoutParents(): void
     {
-        $resource = TestResourceFactory::create([]);
+        $resource = Resource::create([]);
         $parent = $this->hierarchyLoader->getParentLocation(
             $resource,
             'x',
@@ -331,7 +331,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testGetParentLocationWithInvalidData(): void
     {
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'base' => [
                 'trees' => [
                     'category' => [
@@ -352,7 +352,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testGetParentLocationWithParentIdNotFound(): void
     {
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'base' => [
                 'trees' => [
                     'category' => [
@@ -400,7 +400,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
             'category',
         );
 
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'url' => '/c.php',
             'id' => 'c',
             'base' => [
@@ -431,7 +431,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
             'category',
         );
 
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'url' => '/c.php',
             'id' => 'c',
             'base' => [
@@ -462,7 +462,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
             'category',
         );
 
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'url' => '/c.php',
             'id' => 'c',
             'base' => [
@@ -493,7 +493,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
             'category',
         );
 
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'url' => '/a.php',
             'id' => 'a',
             'base' => [

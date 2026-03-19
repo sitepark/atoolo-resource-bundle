@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Atoolo\Resource\Test\TestResourceFactory;
+use Atoolo\Resource\Resource;
 
-return TestResourceFactory::create([
+return Resource::create([
     'url' => '/1/1.php',
     'id' => '1-1',
     'name' => '1-1',

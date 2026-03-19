@@ -63,14 +63,9 @@ class PParameterServiceTest extends TestCase
 
     private function createResource(string $id, string $location): Resource
     {
-        return new Resource(
-            location: $location,
-            url: $location,
-            id: $id,
-            name: '',
-            objectType: '',
-            lang: ResourceLanguage::default(),
-            data: new DataBag([]),
-        );
+        return Resource::create([
+            'url' => $location,
+            'id' => $id,
+        ]);
     }
 }

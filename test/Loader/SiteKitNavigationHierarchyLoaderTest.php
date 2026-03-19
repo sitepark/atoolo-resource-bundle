@@ -8,7 +8,7 @@ use Atoolo\Resource\Exception\RootMissingException;
 use Atoolo\Resource\Loader\SiteKitNavigationHierarchyLoader;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
-use Atoolo\Resource\Test\TestResourceFactory;
+use Atoolo\Resource\Resource;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +19,7 @@ class SiteKitNavigationHierarchyLoaderTest extends TestCase
     {
         $treeLoader = $this->createTreeLoader('');
 
-        $root = TestResourceFactory::create([
+        $root = Resource::create([
             'home' => true,
         ]);
 
