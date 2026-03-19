@@ -15,6 +15,7 @@ return TestResourceFactory::create([
                 'parents' => [
                     'withRecursion' => [
                         'url' => '/withSelfRecursion.php',
+                        'id' => 'withRecursion',
                     ],
                 ],
             ],

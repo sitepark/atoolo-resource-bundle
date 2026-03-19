@@ -15,6 +15,7 @@ return TestResourceFactory::create([
                 'parents' => [
                     'root' => [
                         'url' => '/root.php',
+                        'id' => 'root',
                     ],
                 ],
                 'children' => [

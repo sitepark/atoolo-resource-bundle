@@ -15,6 +15,7 @@ return TestResourceFactory::create([
                 'parents' => [
                     'withRecursionB' => [
                         'url' => '/withRecursionB.php',
+                        'id' => 'withRecursionB',
                     ],
                 ],
             ],

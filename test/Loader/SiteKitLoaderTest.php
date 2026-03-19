@@ -17,6 +17,7 @@ use Atoolo\Resource\Service\LangPathService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 #[CoversClass(SiteKitLoader::class)]
 class SiteKitLoaderTest extends TestCase
@@ -25,14 +26,14 @@ class SiteKitLoaderTest extends TestCase
 
     private IdPathMapper&MockObject $idPathMapper;
 
+    private ResourceChannel $channel;
+
     private SiteKitLoader $loader;
-
-
 
     protected function setUp(): void
     {
         $resourceDir = realpath(__DIR__ . '/../resources/Loader/SiteKitLoader');
-        $channel = new ResourceChannel(
+        $this->channel = new ResourceChannel(
             '1',
             'Test Channel',
             'test-www',
@@ -51,7 +52,7 @@ class SiteKitLoaderTest extends TestCase
         $this->langPathService = $this->createMock(LangPathService::class);
         $this->idPathMapper = $this->createMock(IdPathMapper::class);
 
-        $this->loader = new SiteKitLoader($channel, $this->langPathService, $this->idPathMapper);
+        $this->loader = new SiteKitLoader($this->channel, $this->langPathService, $this->idPathMapper);
     }
 
     public function testExists(): void
@@ -209,5 +210,93 @@ class SiteKitLoaderTest extends TestCase
     {
         $this->expectException(InvalidResourceException::class);
         $this->loader->load(ResourceLocation::of('nonArrayReturned.php'));
+    }
+
+    public function testIdToLocationThrowsWhenMapperIsDisabled(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(false);
+        $this->expectException(RuntimeException::class);
+        $this->loader->idToLocation(1118);
+    }
+
+    public function testIdToLocationThrowsWhenMapperIsNull(): void
+    {
+        $loader = new SiteKitLoader($this->channel, $this->langPathService, null);
+        $this->expectException(RuntimeException::class);
+        $loader->idToLocation(1118);
+    }
+
+    public function testIdToLocation(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('pathFor')->willReturn('000/001/118');
+        $location = $this->loader->idToLocation(1118);
+        $this->assertEquals('/000/001/118.php', $location, 'unexpected id-based location');
+    }
+
+    public function testLoadThrowsWhenIdPathMapperHasNoMappingForLocation(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('mapToIdPath')->willReturn(null);
+        $this->langPathService->method('langToLocale')->willReturn('');
+        $this->expectException(ResourceNotFoundException::class);
+        $this->loader->load(ResourceLocation::of('/somePage.php'));
+    }
+
+    public function testLoadWithIdPathMapperEnabled(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('mapToIdPath')->willReturn('validResource');
+        $this->langPathService->method('langToLocale')->willReturn('');
+        $resource = $this->loader->load(ResourceLocation::of('/somePage.php'));
+        $this->assertEquals('1118', $resource->id, 'unexpected id when loading via id path mapper');
+    }
+
+    public function testExistsWithIdPathMapperEnabled(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('mapToIdPath')->willReturn('validResource');
+        $this->langPathService->method('langToLocale')->willReturn('');
+        $exists = $this->loader->exists(ResourceLocation::of('/somePage.php'));
+        $this->assertTrue($exists, 'resource should exist when located via id path mapper');
+    }
+
+    public function testLoadWithLangAndMissingTranslation(): void
+    {
+        $this->langPathService->method('langToLocale')->willReturn('it_IT');
+        $resource = $this->loader->load(
+            ResourceLocation::of('validResource.php', ResourceLanguage::of('it')),
+        );
+        $this->assertEquals(
+            '1118',
+            $resource->id,
+            'should fall back to original file when translation is missing',
+        );
+    }
+
+    public function testLoadWithIdPathMapperEnabledAndMissingTranslation(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('mapToIdPath')->willReturn('validResource');
+        $this->langPathService->method('langToLocale')->willReturn('it_IT');
+        $resource = $this->loader->load(ResourceLocation::of('/somePage.php'));
+        $this->assertEquals(
+            '1118',
+            $resource->id,
+            'should fall back to original file when id-mapped translation is missing',
+        );
+    }
+
+    public function testLoadWithIdPathMapperEnabledAndTranslation(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('mapToIdPath')->willReturn('validResource.php');
+        $this->langPathService->method('langToLocale')->willReturn('en_US');
+        $resource = $this->loader->load(ResourceLocation::of('/somePage.php'));
+        $this->assertEquals(
+            ResourceLanguage::of('en'),
+            $resource->lang,
+            'should load translated file when id-mapped translation exists',
+        );
     }
 }

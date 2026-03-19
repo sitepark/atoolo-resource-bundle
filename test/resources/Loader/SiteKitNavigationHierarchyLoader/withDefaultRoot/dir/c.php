@@ -16,9 +16,11 @@ return TestResourceFactory::create([
                     'b' => [
                         'isPrimary' => true,
                         'url' => '/dir/b.php',
+                        'id' => 'b',
                     ],
                     'a' => [
                         'url' => '/dir/a.php',
+                        'id' => 'a',
                     ],
                 ],
             ],
