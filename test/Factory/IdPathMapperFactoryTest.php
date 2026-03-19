@@ -47,21 +47,9 @@ class IdPathMapperFactoryTest extends TestCase
      */
     private function createResourceChannel(array $attributes): ResourceChannel
     {
-        return new ResourceChannel(
-            id: '',
-            name: '',
-            anchor: '',
-            serverName: '',
-            isPreview: false,
-            nature: '',
-            locale: '',
-            baseDir: '',
-            resourceDir: '',
-            configDir: '',
-            searchIndex: '',
-            translationLocales: [],
-            attributes: new DataBag($attributes),
-            tenant: $this->createStub(ResourceTenant::class),
-        );
+        return ResourceChannel::create([
+            'isPreview' => false,
+            'attributes' => $attributes,
+        ]);
     }
 }

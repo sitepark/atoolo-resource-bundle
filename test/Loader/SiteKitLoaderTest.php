@@ -33,22 +33,20 @@ class SiteKitLoaderTest extends TestCase
     protected function setUp(): void
     {
         $resourceDir = realpath(__DIR__ . '/../resources/Loader/SiteKitLoader');
-        $this->channel = new ResourceChannel(
-            '1',
-            'Test Channel',
-            'test-www',
-            'test-server',
-            false,
-            'internet',
-            'de_DE',
-            '',
-            $resourceDir,
-            '',
-            'test-www',
-            ['en_US', 'it_IT'],
-            new DataBag(['attribute' => 'value']),
-            $this->createStub(ResourceTenant::class),
-        );
+        $this->channel = ResourceChannel::create([
+            'id' => '1',
+            'name' => 'Test Channel',
+            'anchor' => 'test-www',
+            'serverName' => 'test-server',
+            'nature' => 'internet',
+            'locale' => 'de_DE',
+            'resourceDir' => $resourceDir,
+            'searchIndex' => 'test-www',
+            'translationLocales' => ['en_US', 'it_IT'],
+            'attributes' => [
+                'attribute' => 'value',
+            ],
+        ]);
         $this->langPathService = $this->createMock(LangPathService::class);
         $this->idPathMapper = $this->createMock(IdPathMapper::class);
 

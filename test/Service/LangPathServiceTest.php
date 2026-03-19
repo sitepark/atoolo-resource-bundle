@@ -128,21 +128,8 @@ class LangPathServiceTest extends TestCase
      */
     private function createResourceChannel(array $translationLocales): ResourceChannel
     {
-        return new ResourceChannel(
-            id: '',
-            name: '',
-            anchor: '',
-            serverName: '',
-            isPreview: false,
-            nature: '',
-            locale: '',
-            baseDir: '',
-            resourceDir: '',
-            configDir: '',
-            searchIndex: '',
-            translationLocales: $translationLocales,
-            attributes: new DataBag([]),
-            tenant: $this->createStub(ResourceTenant::class),
-        );
+        return ResourceChannel::create([
+            'translationLocales' => $translationLocales,
+        ]);
     }
 }

@@ -69,21 +69,9 @@ class ManifestLoaderTest extends TestCase
 
     private function createResourceChannel(string $configDir): ResourceChannel
     {
-        return new ResourceChannel(
-            id: '',
-            name: '',
-            anchor: '',
-            serverName: '',
-            isPreview: false,
-            nature: '',
-            locale: '',
-            baseDir: '',
-            resourceDir: '',
-            configDir: $configDir,
-            searchIndex: '',
-            translationLocales: [],
-            attributes: new DataBag([]),
-            tenant: $this->createStub(ResourceTenant::class),
-        );
+        return ResourceChannel::create([
+            'isPreview' => false,
+            'configDir' => $configDir,
+        ]);
     }
 }
