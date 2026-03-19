@@ -20,6 +20,24 @@ class Resource
         public readonly DataBag $data,
     ) {}
 
+    /**
+     * This factory method is primarily intended for use in tests.
+     *
+     * @param array{location?: string, url?: string, id?: string|int, name?: string, objectType?: string, locale?: string} $data
+     */
+    public static function create(array $data): self
+    {
+        return new Resource(
+            $data['location'] ?? $data['url'] ?? '',
+            $data['url'] ?? '',
+            (string) ($data['id'] ?? ''),
+            $data['name'] ?? '',
+            $data['objectType'] ?? '',
+            ResourceLanguage::of($data['locale'] ?? ''),
+            new DataBag($data),
+        );
+    }
+
     public function toLocation(): ResourceLocation
     {
         return ResourceLocation::of($this->location, $this->lang);
