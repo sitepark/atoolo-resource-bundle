@@ -374,8 +374,8 @@ class ResourceHierarchyWalker
         $this->current = $this->load($children[$childPointer]->location);
 
         $this->childrenStack[] = array_values($children);
-        $this->childrenStackPointer[count($this->childrenStack) - 1] =
-            $childPointer;
+        $this->childrenStackPointer[count($this->childrenStack) - 1]
+            = $childPointer;
 
         return $this->current;
     }

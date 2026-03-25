@@ -27,8 +27,8 @@ class ResourceHierarchyWalkerTest extends TestCase
     public function setUp(): void
     {
         $resourceBaseDir = realpath(
-            __DIR__ . '/resources/' .
-            'ResourceHierarchyWalker',
+            __DIR__ . '/resources/'
+            . 'ResourceHierarchyWalker',
         );
         $this->loader = $this->createStub(
             ResourceLoader::class,

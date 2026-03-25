@@ -21,8 +21,8 @@ class ResourceHierarchyFinderTest extends TestCase
     public function setUp(): void
     {
         $resourceBaseDir = realpath(
-            __DIR__ . '/resources/' .
-            'ResourceHierarchyFinder',
+            __DIR__ . '/resources/'
+            . 'ResourceHierarchyFinder',
         );
         $this->loader = $this->createStub(
             ResourceLoader::class,

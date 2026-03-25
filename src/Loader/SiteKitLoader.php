@@ -78,8 +78,8 @@ class SiteKitLoader implements ResourceLoader
 
     private function locationToFile(ResourceLocation $location): string
     {
-        $file = $this->resourceChannel->resourceDir . '/' .
-            $location->location;
+        $file = $this->resourceChannel->resourceDir . '/'
+            . $location->location;
         $locale = $this->langToLocale($location->lang);
         if (empty($locale)) {
             return $file;

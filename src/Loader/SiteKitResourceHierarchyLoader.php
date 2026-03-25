@@ -195,9 +195,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
             if (!is_array($parent)) {
                 throw new InvalidResourceException(
                     $resource->toLocation(),
-                    'primary parent in ' .
-                    'base.trees.' . $this->treeName . '.parents ' .
-                    'is invalid',
+                    'primary parent in '
+                    . 'base.trees.' . $this->treeName . '.parents '
+                    . 'is invalid',
                 );
             }
             $firstParent ??= $parent;
@@ -206,17 +206,17 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                 if (!isset($parent['url'])) {
                     throw new InvalidResourceException(
                         $resource->toLocation(),
-                        'primary parent in ' .
-                            'base.trees.' . $this->treeName . '.parents ' .
-                            'as no url',
+                        'primary parent in '
+                            . 'base.trees.' . $this->treeName . '.parents '
+                            . 'as no url',
                     );
                 }
                 if (!is_string($parent['url'])) {
                     throw new InvalidResourceException(
                         $resource->toLocation(),
-                        'url of primary parent in ' .
-                             'base.trees.' . $this->treeName . '.parents ' .
-                             'is not a string',
+                        'url of primary parent in '
+                             . 'base.trees.' . $this->treeName . '.parents '
+                             . 'is not a string',
                     );
                 }
                 return ResourceLocation::of(
@@ -229,18 +229,18 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
         if (!isset($firstParent['url'])) {
             throw new InvalidResourceException(
                 $resource->toLocation(),
-                'first parent in ' .
-                    'base.trees.' . $this->treeName . '.parents ' .
-                    'has no url',
+                'first parent in '
+                    . 'base.trees.' . $this->treeName . '.parents '
+                    . 'has no url',
             );
         }
 
         if (!is_string($firstParent['url'])) {
             throw new InvalidResourceException(
                 $resource->toLocation(),
-                'url of first parent in ' .
-                    'base.trees.' . $this->treeName . '.parents ' .
-                    'is not a string',
+                'url of first parent in '
+                    . 'base.trees.' . $this->treeName . '.parents '
+                    . 'is not a string',
             );
         }
 
@@ -268,9 +268,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
             if (!is_array($parent)) {
                 throw new InvalidResourceException(
                     $resource->toLocation(),
-                    'parent in ' .
-                    'base.trees.' . $this->treeName . '.parents ' .
-                    'not an array',
+                    'parent in '
+                    . 'base.trees.' . $this->treeName . '.parents '
+                    . 'not an array',
                 );
             }
             if ($parentId === (string) $id) {
@@ -303,9 +303,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
             if (!is_array($child)) {
                 throw new InvalidResourceException(
                     $resource->toLocation(),
-                    'children in ' .
-                    'base.trees.' . $this->treeName . '.children ' .
-                    'not an array',
+                    'children in '
+                    . 'base.trees.' . $this->treeName . '.children '
+                    . 'not an array',
                 );
             }
             return ResourceLocation::of(

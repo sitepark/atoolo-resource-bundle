@@ -34,8 +34,8 @@ class SiteKitNavigationHierarchyLoaderTest extends TestCase
     {
         $treeLoader = $this->createTreeLoader(
             realpath(
-                __DIR__ . '/../resources/' .
-                'Loader/SiteKitNavigationHierarchyLoader/withHomeFlag',
+                __DIR__ . '/../resources/'
+                . 'Loader/SiteKitNavigationHierarchyLoader/withHomeFlag',
             ),
         );
 
@@ -52,8 +52,8 @@ class SiteKitNavigationHierarchyLoaderTest extends TestCase
     {
         $treeLoader = $this->createTreeLoader(
             realpath(
-                __DIR__ . '/../resources/' .
-                'Loader/SiteKitNavigationHierarchyLoader/withDefaultRoot',
+                __DIR__ . '/../resources/'
+                . 'Loader/SiteKitNavigationHierarchyLoader/withDefaultRoot',
             ),
         );
 
@@ -72,8 +72,8 @@ class SiteKitNavigationHierarchyLoaderTest extends TestCase
     {
         $treeLoader = $this->createTreeLoader(
             realpath(
-                __DIR__ . '/../resources/' .
-                'Loader/SiteKitNavigationHierarchyLoader/withoutRoot',
+                __DIR__ . '/../resources/'
+                . 'Loader/SiteKitNavigationHierarchyLoader/withoutRoot',
             ),
         );
 
