@@ -14,6 +14,7 @@ use Atoolo\Resource\ResourceChannel;
 use Atoolo\Resource\ResourceLanguage;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
+use Atoolo\Resource\SiteKit\SiteKitResource;
 use Error;
 use Locale;
 use ParseError;
@@ -46,7 +47,7 @@ class SiteKitLoader implements ResourceLoader
      * @throws InvalidResourceException
      * @throws ResourceNotFoundException
      */
-    public function load(ResourceLocation $location): Resource
+    public function load(ResourceLocation $location): SiteKitResource
     {
         $data = $this->loadRaw($location);
 
@@ -54,7 +55,7 @@ class SiteKitLoader implements ResourceLoader
 
         $resourceLang = ResourceLanguage::of($data['locale']);
 
-        return new Resource(
+        return new SiteKitResource(
             $location->location,
             (string) $data['id'],
             $data['name'],

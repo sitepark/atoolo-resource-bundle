@@ -1,0 +1,1 @@
+This namespace should be moved into a separate atoolo-sitekit-bundle
