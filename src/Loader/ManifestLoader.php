@@ -37,8 +37,8 @@ class ManifestLoader
             $data = require $manifestFile;
             if (!is_array($data)) {
                 throw new RuntimeException(
-                    'The SiteManifest configuration ' .
-                    $manifestFile . ' should return an array',
+                    'The SiteManifest configuration '
+                    . $manifestFile . ' should return an array',
                 );
             }
             return new Manifest(

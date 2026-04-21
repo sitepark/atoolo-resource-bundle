@@ -132,8 +132,8 @@ class FixedDecimalGroupingIdPathMapper implements IdPathMapper
 
         if ($max >= 0 && $id > $max) {
             throw new InvalidArgumentException(
-                "id must be <= $max for fixed layout (levels=$this->levels, " .
-                "digits=$this->digitsPerLevel)",
+                "id must be <= $max for fixed layout (levels=$this->levels, "
+                . "digits=$this->digitsPerLevel)",
             );
         }
     }
