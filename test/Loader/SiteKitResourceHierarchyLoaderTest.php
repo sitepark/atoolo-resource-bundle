@@ -28,8 +28,8 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
     private function createLoader(string $className)
     {
         $resourceBaseDir = realpath(
-            __DIR__ . '/../resources/' .
-            'Loader/SiteKitResourceHierarchyLoader',
+            __DIR__ . '/../resources/'
+            . 'Loader/SiteKitResourceHierarchyLoader',
         );
         $resourceLoader = $this->createStub(
             ResourceLoader::class,

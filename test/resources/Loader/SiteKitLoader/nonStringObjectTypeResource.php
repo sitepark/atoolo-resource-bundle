@@ -3,8 +3,8 @@
 /* Bootstrap */
 if (!isset($context)) {
     $context = include(
-        __DIR__ .
-        '/./WEB-IES/sitekit-module/php/bootstrapper.php'
+        __DIR__
+        . '/./WEB-IES/sitekit-module/php/bootstrapper.php'
     );
 }
 if (!isset($lifecycle)) {

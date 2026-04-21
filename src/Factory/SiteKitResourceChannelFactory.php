@@ -139,14 +139,14 @@ class SiteKitResourceChannelFactory implements ResourceChannelFactory
             return;
         }
 
-        $documentRootLayoutContextPhpFile =
-            $this->baseDir . '/WEB-IES/context.php';
+        $documentRootLayoutContextPhpFile
+            = $this->baseDir . '/WEB-IES/context.php';
 
         if (!file_exists($documentRootLayoutContextPhpFile)) {
             throw new RuntimeException(
-                'context.php does not exists: ' .
-                $resourceLayoutContextPhpFile . ' or ' .
-                $documentRootLayoutContextPhpFile,
+                'context.php does not exists: '
+                . $resourceLayoutContextPhpFile . ' or '
+                . $documentRootLayoutContextPhpFile,
             );
         }
 

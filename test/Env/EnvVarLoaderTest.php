@@ -49,8 +49,8 @@ class EnvVarLoaderTest extends TestCase
 
     public function testDetermineResourceViaScriptFilename(): void
     {
-        $_SERVER['SCRIPT_FILENAME'] =
-            $this->baseDir . '/hostDir/app/bin/console';
+        $_SERVER['SCRIPT_FILENAME']
+            = $this->baseDir . '/hostDir/app/bin/console';
         $loader = new EnvVarLoader('/tmp');
         $env = $loader->loadEnvVars();
         $this->assertEquals(

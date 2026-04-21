@@ -16,9 +16,9 @@ class SiteKitResourceChannelFactoryTest extends TestCase
 {
     public function testCreateWithResourceLayout(): void
     {
-        $baseDir = __DIR__ .
-            '/../resources/SiteKitResourceChannelFactory' .
-            '/resourceLayout';
+        $baseDir = __DIR__
+            . '/../resources/SiteKitResourceChannelFactory'
+            . '/resourceLayout';
         $resourceDir = $baseDir . '/objects';
         $configDir = $baseDir . '/configs';
 
@@ -60,9 +60,9 @@ class SiteKitResourceChannelFactoryTest extends TestCase
 
     public function testCreateWithDocumentRootLayout(): void
     {
-        $baseDir = __DIR__ .
-            '/../resources/SiteKitResourceChannelFactory' .
-            '/documentRootLayout';
+        $baseDir = __DIR__
+            . '/../resources/SiteKitResourceChannelFactory'
+            . '/documentRootLayout';
         $resourceDir = $baseDir;
         $configDir = $baseDir;
 
@@ -103,9 +103,9 @@ class SiteKitResourceChannelFactoryTest extends TestCase
 
     public function testCreateNonExistsContextPhp(): void
     {
-        $resourceDir = __DIR__ .
-            '/../resources/SiteKitResourceChannelFactory' .
-            '/noexists';
+        $resourceDir = __DIR__
+            . '/../resources/SiteKitResourceChannelFactory'
+            . '/noexists';
 
         $factory = new SiteKitResourceChannelFactory($resourceDir);
 
@@ -115,9 +115,9 @@ class SiteKitResourceChannelFactoryTest extends TestCase
 
     public function testCreateWithInvalidContextPhp(): void
     {
-        $resourceDir = __DIR__ .
-            '/../resources/SiteKitResourceChannelFactory' .
-            '/invalid';
+        $resourceDir = __DIR__
+            . '/../resources/SiteKitResourceChannelFactory'
+            . '/invalid';
 
         $factory = new SiteKitResourceChannelFactory($resourceDir);
 
