@@ -25,30 +25,32 @@ class SiteKitResourceChannelFactoryTest extends TestCase
         $factory = new SiteKitResourceChannelFactory($baseDir);
         $channel = $factory->create();
 
-        $expected = new ResourceChannel(
-            '1',
-            'Test',
-            'test',
-            'www.test.org',
-            true,
-            'internet',
-            'de_DE',
-            $baseDir,
-            $resourceDir,
-            $configDir,
-            'test',
-            [],
-            new DataBag(['abc' => 'xyz' , 'hello' => 'world']),
-            new ResourceTenant(
-                '2',
-                'Test-Tanent',
-                'test-tanent',
-                'test-host',
-                new DataBag([
+        $expected = ResourceChannel::create([
+            'id' => '1',
+            'name' => 'Test',
+            'anchor' => 'test',
+            'serverName' => 'www.test.org',
+            'isPreview' => true,
+            'nature' => 'internet',
+            'locale' => 'de_DE',
+            'baseDir' => $baseDir,
+            'resourceDir' => $resourceDir,
+            'configDir' => $configDir,
+            'searchIndex' => 'test',
+            'attributes' => [
+                'abc' => 'xyz' ,
+                'hello' => 'world',
+            ],
+            'tenant' => [
+                'id' => '2',
+                'name' => 'Test-Tanent',
+                'anchor' => 'test-tanent',
+                'host' => 'test-host',
+                'attributes' => [
                     'abc' => 'cde',
-                ]),
-            ),
-        );
+                ],
+            ],
+        ]);
         $this->assertEquals(
             $expected,
             $channel,
@@ -67,30 +69,31 @@ class SiteKitResourceChannelFactoryTest extends TestCase
         $factory = new SiteKitResourceChannelFactory($baseDir);
         $channel = $factory->create();
 
-        $expected = new ResourceChannel(
-            '1',
-            'Test',
-            'test',
-            'www.test.org',
-            true,
-            'internet',
-            'de_DE',
-            $baseDir,
-            $resourceDir,
-            $configDir,
-            'test',
-            [],
-            new DataBag(['abc' => 'cde']),
-            new ResourceTenant(
-                '2',
-                'Test-Tanent',
-                'test-tanent',
-                'test-host',
-                new DataBag([
+        $expected = ResourceChannel::create([
+            'id' => '1',
+            'name' => 'Test',
+            'anchor' => 'test',
+            'serverName' => 'www.test.org',
+            'isPreview' => true,
+            'nature' => 'internet',
+            'locale' => 'de_DE',
+            'baseDir' => $baseDir,
+            'resourceDir' => $resourceDir,
+            'configDir' => $configDir,
+            'searchIndex' => 'test',
+            'attributes' => [
+                'abc' => 'cde',
+            ],
+            'tenant' => [
+                'id' => '2',
+                'name' => 'Test-Tanent',
+                'anchor' => 'test-tanent',
+                'host' => 'test-host',
+                'attributes' => [
                     'abc' => 'cde',
-                ]),
-            ),
-        );
+                ],
+            ],
+        ]);
         $this->assertEquals(
             $expected,
             $channel,

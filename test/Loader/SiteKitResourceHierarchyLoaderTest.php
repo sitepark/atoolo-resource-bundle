@@ -8,7 +8,7 @@ use Atoolo\Resource\Exception\InvalidResourceException;
 use Atoolo\Resource\Loader\SiteKitResourceHierarchyLoader;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
-use Atoolo\Resource\Test\TestResourceFactory;
+use Atoolo\Resource\Resource;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
@@ -138,7 +138,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testIsRoot(): void
     {
-        $root = TestResourceFactory::create([]);
+        $root = Resource::create([]);
         $isRoot = $this->hierarchyLoader->isRoot($root);
 
         $this->assertTrue(
@@ -318,7 +318,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testGetParentLocationWithoutParents(): void
     {
-        $resource = TestResourceFactory::create([]);
+        $resource = Resource::create([]);
         $parent = $this->hierarchyLoader->getParentLocation(
             $resource,
             'x',
@@ -331,7 +331,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testGetParentLocationWithInvalidData(): void
     {
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'base' => [
                 'trees' => [
                     'category' => [
@@ -352,7 +352,7 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
 
     public function testGetParentLocationWithParentIdNotFound(): void
     {
-        $resource = TestResourceFactory::create([
+        $resource = Resource::create([
             'base' => [
                 'trees' => [
                     'category' => [
@@ -374,6 +374,144 @@ class SiteKitResourceHierarchyLoaderTest extends TestCase
         $this->assertNull(
             $parent,
             'parent should be null',
+        );
+    }
+
+    public function testIdToLocation(): void
+    {
+        $resourceLoader = $this->createMock(ResourceLoader::class);
+        $hierarchyLoader = new SiteKitResourceHierarchyLoader(
+            $resourceLoader,
+            'category',
+        );
+
+        $resourceLoader->expects($this->once())
+            ->method('idToLocation');
+
+        $hierarchyLoader->idToLocation(123);
+    }
+
+    public function testGetPrimaryParentLocationWithIdMapping(): void
+    {
+        $resourceLoader = $this->createMock(ResourceLoader::class);
+        $resourceLoader->method('idToLocation')->willReturn('/mapped/parent.php');
+        $hierarchyLoader = new SiteKitResourceHierarchyLoader(
+            $resourceLoader,
+            'category',
+        );
+
+        $resource = Resource::create([
+            'url' => '/c.php',
+            'id' => 'c',
+            'base' => [
+                'trees' => [
+                    'category' => [
+                        'parents' => [
+                            ['id' => 999, 'url' => '/fallback.php', 'isPrimary' => true],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $location = $hierarchyLoader->getPrimaryParentLocation($resource);
+        $this->assertEquals(
+            '/mapped/parent.php',
+            $location->location,
+            'should use id-mapped location instead of url for primary parent',
+        );
+    }
+
+    public function testGetFirstParentLocationWithIdMapping(): void
+    {
+        $resourceLoader = $this->createMock(ResourceLoader::class);
+        $resourceLoader->method('idToLocation')->willReturn('/mapped/parent.php');
+        $hierarchyLoader = new SiteKitResourceHierarchyLoader(
+            $resourceLoader,
+            'category',
+        );
+
+        $resource = Resource::create([
+            'url' => '/c.php',
+            'id' => 'c',
+            'base' => [
+                'trees' => [
+                    'category' => [
+                        'parents' => [
+                            ['id' => 999, 'url' => '/fallback.php'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $location = $hierarchyLoader->getPrimaryParentLocation($resource);
+        $this->assertEquals(
+            '/mapped/parent.php',
+            $location->location,
+            'should use id-mapped location instead of url for first parent fallback',
+        );
+    }
+
+    public function testGetParentLocationWithIdMapping(): void
+    {
+        $resourceLoader = $this->createMock(ResourceLoader::class);
+        $resourceLoader->method('idToLocation')->willReturn('/mapped/parent.php');
+        $hierarchyLoader = new SiteKitResourceHierarchyLoader(
+            $resourceLoader,
+            'category',
+        );
+
+        $resource = Resource::create([
+            'url' => '/c.php',
+            'id' => 'c',
+            'base' => [
+                'trees' => [
+                    'category' => [
+                        'parents' => [
+                            'a' => ['id' => 999, 'url' => '/fallback.php'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $location = $hierarchyLoader->getParentLocation($resource, 'a');
+        $this->assertEquals(
+            '/mapped/parent.php',
+            $location->location,
+            'should use id-mapped location instead of url for getParentLocation',
+        );
+    }
+
+    public function testGetChildrenLocationsWithIdMapping(): void
+    {
+        $resourceLoader = $this->createMock(ResourceLoader::class);
+        $resourceLoader->method('idToLocation')->willReturn('/mapped/child.php');
+        $hierarchyLoader = new SiteKitResourceHierarchyLoader(
+            $resourceLoader,
+            'category',
+        );
+
+        $resource = Resource::create([
+            'url' => '/a.php',
+            'id' => 'a',
+            'base' => [
+                'trees' => [
+                    'category' => [
+                        'children' => [
+                            'b' => ['id' => 999, 'url' => '/fallback.php'],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $locations = array_values($hierarchyLoader->getChildrenLocations($resource));
+        $this->assertEquals(
+            '/mapped/child.php',
+            $locations[0]->location,
+            'should use id-mapped location instead of url for children',
         );
     }
 }

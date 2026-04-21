@@ -10,6 +10,7 @@ use Atoolo\Resource\Resource;
 use Atoolo\Resource\ResourceHierarchyLoader;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
 {
@@ -30,6 +31,11 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
     public function exists(ResourceLocation $location): bool
     {
         return $this->resourceLoader->exists($location);
+    }
+
+    public function idToLocation(int $id): ?string
+    {
+        return $this->resourceLoader->idToLocation($id);
     }
 
     public function cleanup(): void
@@ -219,8 +225,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                              . 'is not a string',
                     );
                 }
+
                 return ResourceLocation::of(
-                    $parent['url'],
+                    $this->idToLocation((int) $parent['id']) ?? $parent['url'],
                     $resource->lang,
                 );
             }
@@ -245,9 +252,10 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
         }
 
         return ResourceLocation::of(
-            $firstParent['url'],
+            $this->idToLocation((int) $firstParent['id']) ?? $firstParent['url'],
             $resource->lang,
         );
+
     }
 
     public function getParentLocation(
@@ -274,10 +282,12 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                 );
             }
             if ($parentId === (string) $id) {
+
                 return ResourceLocation::of(
-                    $parent['url'],
+                    $this->idToLocation((int) $parent['id']) ?? $parent['url'],
                     $resource->lang,
                 );
+
             }
         }
 
@@ -308,8 +318,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                     . 'not an array',
                 );
             }
+
             return ResourceLocation::of(
-                $child['url'],
+                $this->idToLocation((int) $child['id']) ?? $child['url'],
                 $resource->lang,
             );
         }, $childrenList);

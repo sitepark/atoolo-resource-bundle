@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Atoolo\Resource\Test\TestResourceFactory;
+use Atoolo\Resource\Resource;
 
-return TestResourceFactory::create([
+return Resource::create([
     'url' => '/dir/c.php',
     'id' => 'c',
     'name' => 'c',
@@ -16,9 +16,11 @@ return TestResourceFactory::create([
                     'b' => [
                         'isPrimary' => true,
                         'url' => '/dir/b.php',
+                        'id' => 'b',
                     ],
                     'a' => [
                         'url' => '/dir/a.php',
+                        'id' => 'a',
                     ],
                 ],
             ],
