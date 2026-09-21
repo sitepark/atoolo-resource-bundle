@@ -274,10 +274,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                 );
             }
             if ($parentId === (string) $id) {
-                return ResourceLocation::of(
-                    $parent['url'],
-                    $resource->lang,
-                );
+                /** @var string $url */
+                $url = $parent['url'];
+                return ResourceLocation::of($url, $resource->lang);
             }
         }
 
@@ -308,10 +307,9 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                     . 'not an array',
                 );
             }
-            return ResourceLocation::of(
-                $child['url'],
-                $resource->lang,
-            );
+            /** @var string $url */
+            $url = $child['url'];
+            return ResourceLocation::of($url, $resource->lang);
         }, $childrenList);
     }
 }

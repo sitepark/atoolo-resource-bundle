@@ -104,7 +104,11 @@ class EnvVarLoader implements EnvVarLoaderInterface
             throw new RuntimeException('invalid context.php: ' . $contextFile);
         }
 
-        return $context['publisher']['serverName'] ?? '';
+        $publisher = $context['publisher'] ?? null;
+        $serverName = is_array($publisher)
+            ? ($publisher['serverName'] ?? '')
+            : '';
+        return is_string($serverName) ? $serverName : '';
     }
 
     private function getContextFile(string $resourceRoot): ?string

@@ -55,7 +55,8 @@ class DataBag
     {
         $data = $this->findData($this->data, $name);
         if (is_array($data)) {
-            return (array) $data;
+            /** @var array<string, mixed> $data */
+            return $data;
         }
         return $default;
     }
@@ -70,7 +71,8 @@ class DataBag
     ): array {
         $data = $this->findData($this->data, $name);
         if (is_array($data)) {
-            return (array) $data;
+            /** @var array<string, mixed> $data */
+            return $data;
         }
         return $default;
     }
