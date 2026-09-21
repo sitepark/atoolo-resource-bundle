@@ -1,12 +1,13 @@
 <?php
 
-return new \Atoolo\Resource\Resource(
-    '/a.php',
-    'a',
-    'a',
-    '',
-    \Atoolo\Resource\ResourceLanguage::of('de_DE'),
-    new \Atoolo\Resource\DataBag([
-        'home' => true,
-    ]),
-);
+declare(strict_types=1);
+
+use Atoolo\Resource\Resource;
+
+return Resource::create([
+    'url' => '/a.php',
+    'id' => 'a',
+    'name' => 'a',
+    'locale' => 'de_DE',
+    'home' => true,
+]);

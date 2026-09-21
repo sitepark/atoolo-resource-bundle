@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Atoolo\Resource\Test\TestResourceFactory;
+use Atoolo\Resource\Resource;
 
-return TestResourceFactory::create([
+return Resource::create([
     'url' => '/withSelfRecursion.php',
     'id' => 'withRecursion',
     'name' => 'withRecursion',
@@ -15,6 +15,7 @@ return TestResourceFactory::create([
                 'parents' => [
                     'withRecursion' => [
                         'url' => '/withSelfRecursion.php',
+                        'id' => 'withRecursion',
                     ],
                 ],
             ],

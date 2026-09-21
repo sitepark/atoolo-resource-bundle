@@ -19,6 +19,8 @@ interface ResourceLoader
      */
     public function load(ResourceLocation $location): Resource;
 
+    public function idToLocation(int $id): ?string;
+
     public function exists(ResourceLocation $location): bool;
 
     /**

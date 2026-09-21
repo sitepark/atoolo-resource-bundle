@@ -75,6 +75,16 @@ class CachedResourceLoaderTest extends TestCase
         );
     }
 
+    public function testIdToLocation(): void
+    {
+        $resourceLoader = $this->createMock(ResourceLoader::class);
+        $resourceLoader->expects($this->once())
+            ->method('idToLocation');
+        $cachedLoader = new CachedResourceLoader($resourceLoader);
+
+        $cachedLoader->idToLocation(123);
+    }
+
     public function testCleanup(): void
     {
 
