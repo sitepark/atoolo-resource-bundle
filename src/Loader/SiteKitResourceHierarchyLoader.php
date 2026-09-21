@@ -226,10 +226,11 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                     );
                 }
 
-                return ResourceLocation::of(
-                    $this->idToLocation((int) $parent['id']) ?? $parent['url'],
-                    $resource->lang,
-                );
+                /** @var int|string $parentId */
+                $parentId = $parent['id'] ?? 0;
+                /** @var string $url */
+                $url = $this->idToLocation((int) $parentId) ?? $parent['url'];
+                return ResourceLocation::of($url, $resource->lang);
             }
         }
 
@@ -251,10 +252,12 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
             );
         }
 
-        return ResourceLocation::of(
-            $this->idToLocation((int) $firstParent['id']) ?? $firstParent['url'],
-            $resource->lang,
-        );
+        /** @var int|string $firstParentId */
+        $firstParentId = $firstParent['id'] ?? 0;
+        /** @var string $url */
+        $url = $this->idToLocation((int) $firstParentId)
+            ?? $firstParent['url'];
+        return ResourceLocation::of($url, $resource->lang);
 
     }
 
@@ -282,12 +285,11 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                 );
             }
             if ($parentId === (string) $id) {
-
-                return ResourceLocation::of(
-                    $this->idToLocation((int) $parent['id']) ?? $parent['url'],
-                    $resource->lang,
-                );
-
+                /** @var int|string $parentId */
+                $parentId = $parent['id'] ?? 0;
+                /** @var string $url */
+                $url = $this->idToLocation((int) $parentId) ?? $parent['url'];
+                return ResourceLocation::of($url, $resource->lang);
             }
         }
 
@@ -318,11 +320,11 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                     . 'not an array',
                 );
             }
-
-            return ResourceLocation::of(
-                $this->idToLocation((int) $child['id']) ?? $child['url'],
-                $resource->lang,
-            );
+            /** @var int|string $childId */
+            $childId = $child['id'] ?? 0;
+            /** @var string $url */
+            $url = $this->idToLocation((int) $childId) ?? $child['url'];
+            return ResourceLocation::of($url, $resource->lang);
         }, $childrenList);
     }
 }

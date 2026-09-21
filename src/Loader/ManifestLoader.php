@@ -41,10 +41,10 @@ class ManifestLoader
                     . $manifestFile . ' should return an array',
                 );
             }
-            return new Manifest(
-                $data['home'] ?? 0,
-                $data['errors'] ?? [],
-            );
+            $home = $data['home'] ?? 0;
+            /** @var array<string, int> $errors */
+            $errors = is_array($data['errors'] ?? null) ? $data['errors'] : [];
+            return new Manifest(is_int($home) ? $home : 0, $errors);
         } finally {
             ob_end_clean();
             error_reporting($saveErrorReporting);
