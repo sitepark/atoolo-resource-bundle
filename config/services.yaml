@@ -32,3 +32,18 @@ services:
     arguments:
       - '@atoolo_resource.cached_resource_loader'
       - 'category'
+
+  Atoolo\Resource\Change\ResourceChangeMessageHandler:
+    arguments:
+      $handlers: !tagged_iterator atoolo_resource.resource_change_handler
+
+  Atoolo\Resource\Messenger\ChannelTransportFactory:
+    arguments:
+      $directory: '%kernel.project_dir%/var/spool'
+      $channelFactory: '@atoolo_resource.resource_channel_factory'
+
+  Atoolo\Resource\Controller\:
+    resource: '../src/Controller'
+
+  Atoolo\Resource\Console\:
+    resource: '../src/Console'

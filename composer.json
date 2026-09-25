@@ -12,9 +12,15 @@
     "require": {
         "php": ">=8.1 <8.6.0",
         "ext-intl": "*",
+        "psr/log": "^3",
         "symfony/config": "^6.3 || ^7.4.7",
+        "symfony/console": "^6.3 || ^7.4.7",
         "symfony/dependency-injection": "^6.3 || ^7.4.7",
-        "symfony/http-kernel": "^6.3 || ^7.4.7"
+        "symfony/event-dispatcher": "^6.3 || ^7.4.7",
+        "symfony/http-foundation": "^6.3 || ^7.4.7",
+        "symfony/http-kernel": "^6.3 || ^7.4.7",
+        "symfony/messenger": "^6.3 || ^7.4.7",
+        "symfony/routing": "^6.3 || ^7.4.7"
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
@@ -23,7 +29,8 @@
         "phpcompatibility/php-compatibility": "^9.3.5",
         "phpunit/phpunit": "^10.5.64",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^3.13.5"
+        "squizlabs/php_codesniffer": "^3.13.5",
+        "symfony/filesystem": "^6.3 || ^7.4"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
