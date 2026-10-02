@@ -15,22 +15,17 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 class LangPathService
 {
     /**
-     * @var array<string, string> $langLocaleMap
+     * Created on first use, so that the resource channel is not loaded while
+     * the container is built or warmed up.
+     *
+     * @var ?array<string, string> $langLocaleMap
      */
-    private readonly array $langLocaleMap;
-
-    /**
-     * @var array<string> $supportedLang
-     */
-    private readonly array $supportedLang;
+    private ?array $langLocaleMap = null;
 
     public function __construct(
         #[Autowire(service: 'atoolo_resource.resource_channel')]
         private readonly ResourceChannel $resourceChannel,
-    ) {
-        $this->langLocaleMap = $this->createLangLocaleMap();
-        $this->supportedLang = array_keys($this->langLocaleMap);
-    }
+    ) {}
 
     public function langToLocale(ResourceLanguage $lang): string
     {
@@ -38,7 +33,7 @@ class LangPathService
             return '';
         }
 
-        return $this->langLocaleMap[$lang->code] ?? '';
+        return $this->getLangLocaleMap()[$lang->code] ?? '';
     }
 
     public function parse(string $path): LangPath
@@ -64,7 +59,8 @@ class LangPathService
 
         $potentialLang = $segments[0];
 
-        if (!in_array($potentialLang, $this->supportedLang, true)) {
+        $langLocaleMap = $this->getLangLocaleMap();
+        if (!isset($langLocaleMap[$potentialLang])) {
             return null;
         }
 
@@ -72,7 +68,7 @@ class LangPathService
 
         return new LangPath(
             lang: $potentialLang,
-            locale: $this->langLocaleMap[$potentialLang],
+            locale: $langLocaleMap[$potentialLang],
             path: '/' . $remainingPath,
         );
     }
@@ -89,15 +85,24 @@ class LangPathService
 
         $potentialLang = $matches[2];
 
-        if (!in_array($potentialLang, $this->supportedLang, true)) {
+        $langLocaleMap = $this->getLangLocaleMap();
+        if (!isset($langLocaleMap[$potentialLang])) {
             return null;
         }
 
         return new LangPath(
             lang: $potentialLang,
-            locale: $this->langLocaleMap[$potentialLang],
+            locale: $langLocaleMap[$potentialLang],
             path: $matches[1] . '.php',
         );
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getLangLocaleMap(): array
+    {
+        return $this->langLocaleMap ??= $this->createLangLocaleMap();
     }
 
     /**
