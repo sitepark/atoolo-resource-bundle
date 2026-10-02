@@ -10,6 +10,7 @@ use Atoolo\Resource\Resource;
 use Atoolo\Resource\ResourceHierarchyLoader;
 use Atoolo\Resource\ResourceLoader;
 use Atoolo\Resource\ResourceLocation;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
 {
@@ -30,6 +31,11 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
     public function exists(ResourceLocation $location): bool
     {
         return $this->resourceLoader->exists($location);
+    }
+
+    public function idToLocation(int $id): ?string
+    {
+        return $this->resourceLoader->idToLocation($id);
     }
 
     public function cleanup(): void
@@ -219,10 +225,12 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                              . 'is not a string',
                     );
                 }
-                return ResourceLocation::of(
-                    $parent['url'],
-                    $resource->lang,
-                );
+
+                /** @var int|string $parentId */
+                $parentId = $parent['id'] ?? 0;
+                /** @var string $url */
+                $url = $this->idToLocation((int) $parentId) ?? $parent['url'];
+                return ResourceLocation::of($url, $resource->lang);
             }
         }
 
@@ -244,10 +252,13 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
             );
         }
 
-        return ResourceLocation::of(
-            $firstParent['url'],
-            $resource->lang,
-        );
+        /** @var int|string $firstParentId */
+        $firstParentId = $firstParent['id'] ?? 0;
+        /** @var string $url */
+        $url = $this->idToLocation((int) $firstParentId)
+            ?? $firstParent['url'];
+        return ResourceLocation::of($url, $resource->lang);
+
     }
 
     public function getParentLocation(
@@ -274,8 +285,10 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                 );
             }
             if ($parentId === (string) $id) {
+                /** @var int|string $parentId */
+                $parentId = $parent['id'] ?? 0;
                 /** @var string $url */
-                $url = $parent['url'];
+                $url = $this->idToLocation((int) $parentId) ?? $parent['url'];
                 return ResourceLocation::of($url, $resource->lang);
             }
         }
@@ -307,8 +320,10 @@ class SiteKitResourceHierarchyLoader implements ResourceHierarchyLoader
                     . 'not an array',
                 );
             }
+            /** @var int|string $childId */
+            $childId = $child['id'] ?? 0;
             /** @var string $url */
-            $url = $child['url'];
+            $url = $this->idToLocation((int) $childId) ?? $child['url'];
             return ResourceLocation::of($url, $resource->lang);
         }, $childrenList);
     }
