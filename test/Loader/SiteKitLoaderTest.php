@@ -17,7 +17,6 @@ use Atoolo\Resource\Service\LangPathService;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 #[CoversClass(SiteKitLoader::class)]
 class SiteKitLoaderTest extends TestCase
@@ -210,18 +209,22 @@ class SiteKitLoaderTest extends TestCase
         $this->loader->load(ResourceLocation::of('nonArrayReturned.php'));
     }
 
-    public function testIdToLocationThrowsWhenMapperIsDisabled(): void
+    public function testIdToLocationIsNullWhenMapperIsDisabled(): void
     {
         $this->idPathMapper->method('enabled')->willReturn(false);
-        $this->expectException(RuntimeException::class);
-        $this->loader->idToLocation(1118);
+        $this->assertNull(
+            $this->loader->idToLocation(1118),
+            'no location expected without id based paths',
+        );
     }
 
-    public function testIdToLocationThrowsWhenMapperIsNull(): void
+    public function testIdToLocationIsNullWhenMapperIsNull(): void
     {
         $loader = new SiteKitLoader($this->channel, $this->langPathService, null);
-        $this->expectException(RuntimeException::class);
-        $loader->idToLocation(1118);
+        $this->assertNull(
+            $loader->idToLocation(1118),
+            'no location expected without id path mapper',
+        );
     }
 
     public function testIdToLocation(): void

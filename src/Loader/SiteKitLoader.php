@@ -19,7 +19,6 @@ use Atoolo\Resource\Service\LangPathService;
 use Error;
 use Exception;
 use ParseError;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -45,10 +44,14 @@ class SiteKitLoader implements ResourceLoader
         private readonly ?IdPathMapper $idPathMapper,
     ) {}
 
+    /**
+     * Without id based paths there is no location for an id; the caller
+     * falls back to the url it has.
+     */
     public function idToLocation(int $id): ?string
     {
         if ($this->idPathMapper === null || !$this->idPathMapper->enabled()) {
-            return throw new RuntimeException("Unsupported operation");
+            return null;
         }
         return '/' . $this->idPathMapper->pathFor($id) . '.php';
     }
