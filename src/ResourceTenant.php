@@ -14,11 +14,12 @@ namespace Atoolo\Resource;
  * to a tenant within the CMS system.
  *
  * In older APIs of the CMS system, the term “client” was also used for this.
- *
- * @codeCoverageIgnore
  */
 class ResourceTenant
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         public readonly string $id,
         public readonly string $name,
@@ -26,4 +27,20 @@ class ResourceTenant
         public readonly string $host,
         public readonly DataBag $attributes,
     ) {}
+
+    /**
+     * This factory method is primarily intended for use in tests.
+
+     * @param array{id?: string|int, name?: string, anchor?: string, host?: string, attributes?: array<string, mixed>} $data
+     */
+    public static function create(array $data): self
+    {
+        return new self(
+            (string) ($data['id'] ?? ''),
+            $data['name'] ?? '',
+            $data['anchor'] ?? '',
+            $data['host'] ?? '',
+            new DataBag($data['attributes'] ?? []),
+        );
+    }
 }

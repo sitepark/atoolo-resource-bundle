@@ -29,6 +29,11 @@ class CachedResourceLoader implements ResourceLoader
         private readonly ResourceLoader $resourceLoader,
     ) {}
 
+    public function idToLocation(int $id): ?string
+    {
+        return $this->resourceLoader->idToLocation($id);
+    }
+
     /**
      * @throws InvalidResourceException
      * @throws ResourceNotFoundException
