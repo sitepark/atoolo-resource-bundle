@@ -21,6 +21,11 @@ class ResourceChangesTest extends TestCase
             'changed' => [
                 ['id' => '1', 'path' => '/a.php'],
                 ['id' => 2, 'path' => '/b.php.translations/en_US.php'],
+                [
+                    'id' => '4',
+                    'path' => '/genai/glossary/c.php',
+                    'publicationType' => 'CONFIG',
+                ],
             ],
             'removed' => [['id' => '3']],
         ]);
@@ -30,6 +35,7 @@ class ResourceChangesTest extends TestCase
                 [
                     new ResourceChange('1', '/a.php'),
                     new ResourceChange('2', '/b.php.translations/en_US.php'),
+                    new ResourceChange('4', '/genai/glossary/c.php', 'CONFIG'),
                 ],
                 ['3'],
             ),
@@ -57,6 +63,11 @@ class ResourceChangesTest extends TestCase
                 ['changed' => [['id' => '1', 'path' => '/../a.php']]],
             ],
             'removed no object' => [['removed' => ['1']]],
+            'invalid publication type' => [
+                ['changed' => [
+                    ['id' => '1', 'path' => '/a.php', 'publicationType' => 'config'],
+                ]],
+            ],
         ];
     }
 
@@ -70,7 +81,10 @@ class ResourceChangesTest extends TestCase
     public function testToArrayRoundTrip(): void
     {
         $changes = new ResourceChanges(
-            [new ResourceChange('1', '/a.php')],
+            [
+                new ResourceChange('1', '/a.php'),
+                new ResourceChange('3', '/genai/glossary/c.php', 'CONFIG'),
+            ],
             ['2'],
         );
         $this->assertEquals(
@@ -96,6 +110,40 @@ class ResourceChangesTest extends TestCase
             new ResourceChange('2', '/b.php'),
         ]);
         $this->assertSame(['/a.php', '/b.php'], $changes->changedPaths());
+    }
+
+    public function testChangedResourcePaths(): void
+    {
+        $changes = new ResourceChanges([
+            new ResourceChange('1', '/a.php'),
+            new ResourceChange('2', '/b.php', 'OBJECT'),
+            new ResourceChange('3', '/c.pdf.php', 'MEDIA'),
+            new ResourceChange('4', '/genai/glossary/d.php', 'CONFIG'),
+        ]);
+        $this->assertEquals(
+            ['/a.php', '/b.php', '/c.pdf.php'],
+            $changes->changedResourcePaths(),
+        );
+    }
+
+    public function testIsResource(): void
+    {
+        $this->assertTrue((new ResourceChange('1', '/a.php'))->isResource());
+        $this->assertTrue(
+            (new ResourceChange('1', '/a.php', 'EMBEDDED_MEDIA'))->isResource(),
+        );
+        $this->assertFalse(
+            (new ResourceChange('1', '/a.php', 'CONFIG'))->isResource(),
+        );
+    }
+
+    public function testMergeKeepsAConfigurationAtThePathOfAResource(): void
+    {
+        $merged = (new ResourceChanges([new ResourceChange('1', '/a.php')]))
+            ->merge(new ResourceChanges([
+                new ResourceChange('2', '/a.php', 'CONFIG'),
+            ]));
+        $this->assertCount(2, $merged->changed);
     }
 
     public function testMergeKeepsBoth(): void

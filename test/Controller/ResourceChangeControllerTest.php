@@ -36,13 +36,14 @@ class ResourceChangeControllerTest extends TestCase
             ->method('dispatch')
             ->with(
                 new ResourceChangeMessage(
-                    new ResourceChanges([new ResourceChange('1', '/a.php')], ['2']),
+                    new ResourceChanges([new ResourceChange('1', '/a.php', 'OBJECT')], ['2']),
                 ),
             )
             ->willReturnCallback(static fn(object $m) => new Envelope($m));
 
         $response = (new ResourceChangeController($bus))->notify($this->request(
-            '{"changed":[{"id":"1","path":"/a.php"}],"removed":[{"id":"2"}]}',
+            '{"changed":[{"id":"1","path":"/a.php","publicationType":"OBJECT"}],'
+            . '"removed":[{"id":"2"}]}',
         ));
 
         $this->assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());

@@ -47,6 +47,24 @@ final class ResourceChanges
     }
 
     /**
+     * The paths of the changed resources, without duplicates, leaving out
+     * the files of other publication types such as configurations, which do
+     * not lie in the resource directory.
+     *
+     * @return list<string>
+     */
+    public function changedResourcePaths(): array
+    {
+        return array_values(array_unique(array_map(
+            static fn(ResourceChange $change) => $change->path,
+            array_filter(
+                $this->changed,
+                static fn(ResourceChange $change) => $change->isResource(),
+            ),
+        )));
+    }
+
+    /**
      * Merges the changes of a later notification into these. The last
      * action on a resource wins: a later removal drops earlier changes of
      * the resource, a later change revokes an earlier removal.
@@ -64,7 +82,11 @@ final class ResourceChanges
             if (isset($laterRemoved[$change->id])) {
                 continue;
             }
-            $changed[$change->path] = $change;
+            // a configuration may lie at the path of a resource
+            $key = $change->isResource()
+                ? $change->path
+                : $change->publicationType . ':' . $change->path;
+            $changed[$key] = $change;
         }
 
         $removedIds = [];
@@ -83,7 +105,11 @@ final class ResourceChanges
 
     /**
      * @return array{
-     *     changed: list<array{id: string, path: string}>,
+     *     changed: list<array{
+     *         id: string,
+     *         path: string,
+     *         publicationType?: string
+     *     }>,
      *     removed: list<array{id: string}>
      * }
      */
@@ -94,7 +120,9 @@ final class ResourceChanges
                 static fn(ResourceChange $change) => [
                     'id' => $change->id,
                     'path' => $change->path,
-                ],
+                ] + ($change->publicationType === null
+                    ? []
+                    : ['publicationType' => $change->publicationType]),
                 $this->changed,
             ),
             'removed' => array_map(
@@ -119,6 +147,7 @@ final class ResourceChanges
             $changed[] = new ResourceChange(
                 self::id($entry, "changed[$i]"),
                 self::path($entry, "changed[$i]"),
+                self::publicationType($entry, "changed[$i]"),
             );
         }
 
@@ -153,6 +182,22 @@ final class ResourceChanges
             throw new InvalidArgumentException($name . '.id: string expected');
         }
         return $id;
+    }
+
+    private static function publicationType(
+        mixed $entry,
+        string $name,
+    ): ?string {
+        $type = is_array($entry) ? ($entry['publicationType'] ?? null) : null;
+        if ($type === null) {
+            return null;
+        }
+        if (!is_string($type) || preg_match('/^[A-Z_]+$/', $type) !== 1) {
+            throw new InvalidArgumentException(
+                $name . '.publicationType: name of a publication type expected',
+            );
+        }
+        return $type;
     }
 
     private static function path(mixed $entry, string $name): string
