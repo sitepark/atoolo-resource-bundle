@@ -81,6 +81,9 @@ class SiteKitLoader implements ResourceLoader
 
     public function exists(ResourceLocation $location): bool
     {
+        if (!$this->isValidLocation($location->location)) {
+            return false;
+        }
         return file_exists(
             $this->locationToFile($location),
         );
@@ -88,8 +91,26 @@ class SiteKitLoader implements ResourceLoader
 
     public function cleanup(): void {}
 
+    /**
+     * A location must stay inside the resource directory: parent directory
+     * segments and null bytes are not allowed.
+     */
+    private function isValidLocation(string $location): bool
+    {
+        if (str_contains($location, "\0")) {
+            return false;
+        }
+        return !in_array('..', explode('/', $location), true);
+    }
+
     private function locationToFile(ResourceLocation $location): string
     {
+        if (!$this->isValidLocation($location->location)) {
+            throw new ResourceNotFoundException(
+                $location,
+                'Invalid resource location',
+            );
+        }
 
         $locale = $this->langPathService->langToLocale($location->lang);
 
