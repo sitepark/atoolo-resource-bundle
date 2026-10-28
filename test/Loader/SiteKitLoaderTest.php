@@ -106,6 +106,41 @@ class SiteKitLoaderTest extends TestCase
         $this->loader->cleanup();
     }
 
+    public function testLoadWithParentDirectorySegment(): void
+    {
+        $this->expectException(ResourceNotFoundException::class);
+        $this->expectExceptionMessage('Invalid resource location');
+        $this->loader->load(ResourceLocation::of('/../SiteKitLoader/validResource.php'));
+    }
+
+    public function testLoadWithNullByte(): void
+    {
+        $this->expectException(ResourceNotFoundException::class);
+        $this->expectExceptionMessage('Invalid resource location');
+        $this->loader->load(ResourceLocation::of("validResource.php\0.txt"));
+    }
+
+    public function testExistsWithParentDirectorySegment(): void
+    {
+        $exists = $this->loader->exists(
+            ResourceLocation::of('/../SiteKitLoader/validResource.php'),
+        );
+        $this->assertFalse($exists, 'resource outside the resource dir should not exist');
+    }
+
+    public function testLoadWithDotsInFilenameIsNoParentDirectorySegment(): void
+    {
+        try {
+            $this->loader->load(ResourceLocation::of('/..validResource.php'));
+            $this->fail('ResourceNotFoundException expected');
+        } catch (ResourceNotFoundException $e) {
+            $this->assertStringNotContainsString(
+                'Invalid resource location',
+                $e->getMessage(),
+            );
+        }
+    }
+
     public function testLoadMissingLocation(): void
     {
         $this->expectException(ResourceNotFoundException::class);
