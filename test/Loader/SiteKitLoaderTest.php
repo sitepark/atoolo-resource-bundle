@@ -123,6 +123,51 @@ class SiteKitLoaderTest extends TestCase
         $this->loader->load(ResourceLocation::of('notfound.php'));
     }
 
+    public function testLoadWithParentDirectorySegment(): void
+    {
+        $this->expectException(ResourceNotFoundException::class);
+        $this->expectExceptionMessage('Invalid resource location');
+        $this->loader->load(ResourceLocation::of('/../SiteKitLoader/validResource.php'));
+    }
+
+    public function testLoadWithParentDirectorySegmentAndIdPathMapperEnabled(): void
+    {
+        $this->idPathMapper->method('enabled')->willReturn(true);
+        $this->idPathMapper->method('mapToIdPath')->willReturn('validResource');
+
+        $this->expectException(ResourceNotFoundException::class);
+        $this->expectExceptionMessage('Invalid resource location');
+        $this->loader->load(ResourceLocation::of('/../SiteKitLoader/validResource.php'));
+    }
+
+    public function testLoadWithNullByte(): void
+    {
+        $this->expectException(ResourceNotFoundException::class);
+        $this->expectExceptionMessage('Invalid resource location');
+        $this->loader->load(ResourceLocation::of("validResource.php\0.txt"));
+    }
+
+    public function testExistsWithParentDirectorySegment(): void
+    {
+        $exists = $this->loader->exists(
+            ResourceLocation::of('/../SiteKitLoader/validResource.php'),
+        );
+        $this->assertFalse($exists, 'resource outside the resource dir should not exist');
+    }
+
+    public function testLoadWithDotsInFilenameIsNoParentDirectorySegment(): void
+    {
+        try {
+            $this->loader->load(ResourceLocation::of('/..validResource.php'));
+            $this->fail('ResourceNotFoundException expected');
+        } catch (ResourceNotFoundException $e) {
+            $this->assertStringNotContainsString(
+                'Invalid resource location',
+                $e->getMessage(),
+            );
+        }
+    }
+
     public function testLoadResourceWithCompileError(): void
     {
         $this->expectException(InvalidResourceException::class);
